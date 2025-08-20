@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光伏未来战略 - 破局之矛</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 背景色及变量定义 */
+        :root {
+            --dark-bg: #0a0a23;
+            --neon-blue: #00f7ff;
+            --neon-purple: #b400ff;
+            --neon-cyan: #00ffd4;
+            --neon-yellow: #ffd700;
+            --neon-pink: #ff2a6d;
+            --neon-green: #00ff88;
+            --card-bg: rgba(15, 15, 25, 0.9);
+            --holographic-gradient: linear-gradient(135deg,
+                    var(--neon-blue),
+                    var(--neon-pink),
+                    var(--neon-yellow));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            margin: 0;
+            padding: 0;
+            position: relative;
+            font-family: 'Rajdhani', 'Orbitron', sans-serif;
+            color: white;
+            min-height: 100vh;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* 网格背景 */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 247, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 247, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            animation: gridMove 8s linear infinite;
+        }
+
+        @keyframes gridMove {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 50px 50px;
+            }
+        }
+
+        /* 主能量核心光晕效果 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%;
+            height: 150%;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center,
+                    rgba(120, 210, 255, 0.4) 0%,
+                    rgba(120, 210, 255, 0) 60%);
+            animation: pulse 8s infinite ease-in-out;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 内层金色光晕效果 */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center,
+                    rgba(255, 215, 0, 0.3) 0%,
+                    rgba(255, 215, 0, 0) 50%);
+            animation: pulse 6s infinite ease-in-out 0.5s;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 脉冲动画定义 */
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.95);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(0.95);
+                opacity: 0.7;
+            }
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+
+        #drag-container {
+            perspective: 1500px;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        #spin-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            transform-style: preserve-3d;
+            animation: spin 30s linear infinite;
+            margin: 0;
+            padding: 0;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotateY(0deg);
+            }
+
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
+        /* 卡牌样式 */
+        .card {
+            position: absolute;
+            width: 280px;
+            height: 380px;
+            left: -140px;
+            top: -190px;
+            transform-style: preserve-3d;
+            transition: all 0.8s cubic-bezier(0.215, 0.61, 0.355, 1);
+            cursor: pointer;
+            backface-visibility: visible;
+            pointer-events: auto;
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background: rgba(10, 10, 35, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 247, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .card-front::before,
+        .card-back::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg,
+                    rgba(0, 247, 255, 0) 0%,
+                    rgba(0, 247, 255, 0.1) 50%,
+                    rgba(0, 247, 255, 0) 100%);
+            z-index: -1;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 15px rgba(0, 247, 255, 0.8));
+            background: var(--holographic-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: iconFloat 3s ease-in-out infinite;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .card:hover .card-icon {
+            font-size: 4.5rem;
+            filter: drop-shadow(0 0 20px rgba(0, 247, 255, 1)) drop-shadow(0 0 30px rgba(180, 0, 255, 0.8));
+            animation: iconFloat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            background: var(--holographic-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(180, 0, 255, 0.5);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .card:hover .card-title {
+            font-size: 1.6rem;
+            text-shadow:
+                0 0 20px rgba(0, 247, 255, 1),
+                0 0 40px rgba(180, 0, 255, 0.8),
+                0 0 60px rgba(255, 0, 255, 0.6);
+            color: var(--neon-blue);
+        }
+
+        .card-desc {
+            font-size: 1.1rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .card-name-tag {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%) rotateY(-180deg);
+            backface-visibility: hidden;
+            font-size: 0.9rem;
+            padding: 5px 15px;
+            border-radius: 15px;
+            background: rgba(0, 247, 255, 0.15);
+            border: 1px solid rgba(0, 247, 255, 0.3);
+            color: var(--neon-cyan);
+            white-space: nowrap;
+        }
+
+        .info-panel {
+            position: absolute;
+            width: 65%;
+            max-width: 800px;
+            background: rgba(10, 10, 35, 0.95);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(180, 0, 255, 0.5);
+            border-radius: 20px;
+            padding: 40px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 10;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .info-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg,
+                    rgba(0, 247, 255, 0.05) 0%,
+                    rgba(180, 0, 255, 0.05) 100%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .info-panel::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(180, 0, 255, 0.1), transparent);
+            animation: rotate 10s linear infinite;
+            z-index: -1;
+        }
+
+        .panel-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--neon-purple);
+        }
+
+        .panel-corner.top-left {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .panel-corner.top-right {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .panel-corner.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .panel-corner.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .panel-status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple), var(--neon-cyan));
+            animation: statusBarFlow 3s linear infinite;
+        }
+
+        @keyframes statusBarFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .info-panel.active {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(180, 0, 255, 0.3);
+        }
+
+        .panel-icon {
+            font-size: 3rem;
+            margin-right: 15px;
+            background: var(--holographic-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            filter: drop-shadow(0 0 15px rgba(180, 0, 255, 0.8));
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--holographic-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .panel-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .panel-content p {
+            margin-bottom: 1rem;
+        }
+
+        .rarity-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 12px;
+            background: linear-gradient(135deg, var(--neon-yellow), var(--neon-pink));
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--dark-bg);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .back-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 40px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: transparent;
+            color: var(--neon-blue);
+            border: 3px solid var(--neon-blue);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow:
+                0 0 25px var(--neon-blue),
+                inset 0 0 15px var(--neon-blue);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            color: var(--dark-bg);
+            background: var(--neon-blue);
+            box-shadow:
+                0 0 35px var(--neon-blue),
+                inset 0 0 20px var(--neon-blue);
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        .back-btn.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .card.selected {
+            transform: translateZ(500px) scale(1.2);
+            transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 20;
+        }
+
+        .card.selected::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: var(--holographic-gradient);
+            border-radius: 25px;
+            z-index: -1;
+            animation: selectedGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes selectedGlow {
+            0% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0.6;
+                transform: scale(1.05);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .info-panel {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .info-panel {
+                width: 95%;
+                padding: 25px;
+            }
+
+            .panel-title {
+                font-size: 1.8rem;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 网格背景元素 -->
+    <div class="cyber-grid"></div>
+
+    <div class="container">
+        <div id="drag-container">
+            <div id="spin-container">
+                <!-- 卡牌将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <div class="info-panel" id="infoPanel">
+            <!-- 信息面板内容将通过JavaScript动态生成 -->
+        </div>
+
+        <button class="back-btn" id="backBtn">返回卡牌轮盘</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 卡牌数据
+            const cards = [
+                {
+                    id: 'cognitive',
+                    title: '认知壁垒突围之矛',
+                    fullTitle: '认知壁垒突围之矛',
+                    icon: '🔍',
+                    desc: '打破认知障碍，普及光伏知识',
+                    content: `突围路径：通过多元化传播渠道普及光伏知识，打破公众对光伏发电的认知误区。
+成功案例：阳光电源在2023年开展"阳光进万家"科普活动，覆盖全国30个省份，触达人群超500万。
+数据支撑：活动后调研显示，公众对光伏发电的接受度从62%提升至89%，安装意愿提升40%。`
+                },
+                {
+                    id: 'tech',
+                    title: '技术迭代之矛',
+                    fullTitle: '技术迭代之矛',
+                    icon: '⚙️',
+                    desc: '突破技术瓶颈，提升转换效率',
+                    content: `突围路径：加大研发投入，推动电池技术革新，提高光伏转换效率，降低度电成本。
+技术突破：HJT、TOPCon等新型电池技术快速发展，转换效率突破27%。
+产业影响：2024年，高效电池在全球光伏装机中的占比达到65%，较2020年提升35个百分点。`
+                },
+                {
+                    id: 'cost',
+                    title: '成本控制之矛',
+                    fullTitle: '成本控制之矛',
+                    icon: '💰',
+                    desc: '优化产业链，降低度电成本',
+                    content: `突围路径：通过规模效应、工艺优化和产业链整合，持续降低光伏度电成本。
+成本变化：光伏度电成本从2010年的0.31美元/千瓦时降至2023年的0.03美元/千瓦时。
+市场影响：成本下降推动全球光伏装机量快速增长，2023年新增装机突破300GW。`
+                },
+                {
+                    id: 'policy',
+                    title: '政策协同之矛',
+                    fullTitle: '政策协同之矛',
+                    icon: '📜',
+                    desc: '完善政策体系，强化执行力度',
+                    content: `突围路径：建立健全光伏产业支持政策，加强部门协同，确保政策落地见效。
+政策创新："全额收购+市场化交易"双轨制，解决光伏消纳难题。
+实施效果：2024年，全国光伏弃电率降至3.2%，较2018年的10.3%显著改善。`
+                },
+                {
+                    id: 'storage',
+                    title: '储能配套之矛',
+                    fullTitle: '储能配套之矛',
+                    icon: '🔋',
+                    desc: '发展储能技术，解决消纳问题',
+                    content: `突围路径：推动"光伏+储能"模式发展，提高电力系统灵活性和稳定性。
+技术进展：锂电池储能成本十年下降70%，新型储能技术不断涌现。
+优化建议：
+优化制造工艺：光伏行业应进一步优化制造工艺，研发更高效的电池技术，完善锂电池等配套储能系统，切实提高光伏发电竞争力。
+推动清洁能源融合发展：在埃及大力推行“光伏+绿氢”双轮驱动时，我国新疆库车绿氢示范项目也采用了光伏发电直接制氢技术，年产绿氢2万吨。国家大力推行的“水风光互补”更是在助力低碳减排事业中发挥着关键作用。`
+                }
+            ];
+
+            const spinContainer = document.getElementById('spin-container');
+            const infoPanel = document.getElementById('infoPanel');
+            const backBtn = document.getElementById('backBtn');
+            const dragContainer = document.getElementById('drag-container');
+
+            let isCardSelected = false;
+            let selectedCard = null;
+            let originalTransform = '';
+
+            // 创建五边形排列的卡牌
+            function createCards() {
+                spinContainer.innerHTML = '';
+                const numCards = cards.length;
+                // 五边形的角度计算 (360/5 = 72度)
+                const angleIncrement = (2 * Math.PI) / numCards;
+                const radius = 400; // 五边形的半径
+
+                // 计算五边形每个顶点的坐标并放置卡牌
+                cards.forEach((card, index) => {
+                    const cardElement = document.createElement('div');
+                    cardElement.className = 'card';
+                    cardElement.id = card.id;
+
+                    // 计算当前卡牌的角度（弧度）
+                    const angle = index * angleIncrement;
+
+                    // 计算3D空间中的位置 - 五边形顶点坐标
+                    const xPos = Math.sin(angle) * radius;
+                    const zPos = Math.cos(angle) * radius;
+
+                    // 计算卡牌朝向角度（使其正面朝外）
+                    const faceAngle = angle;
+
+                    // 设置卡牌位置和朝向，确保正面朝外
+                    cardElement.style.transform = `translateX(${xPos}px) translateZ(${zPos}px) rotateY(${faceAngle}rad)`;
+
+                    // 卡牌正面
+                    const cardFront = document.createElement('div');
+                    cardFront.className = 'card-front';
+                    cardFront.innerHTML = `
+                        <div class="card-icon">${card.icon}</div>
+                        <h3 class="card-title">${card.title}</h3>
+                        <p class="card-desc">${card.desc}</p>
+                    `;
+
+                    // 卡牌背面
+                    const cardBack = document.createElement('div');
+                    cardBack.className = 'card-back';
+                    cardBack.innerHTML = `
+                        <h3 class="card-title">${card.title}</h3>
+                        <p class="card-desc">点击查看详情</p>
+                    `;
+
+                    // 卡牌名称标签
+                    const nameTag = document.createElement('div');
+                    nameTag.className = 'card-name-tag';
+                    nameTag.textContent = card.fullTitle;
+
+                    cardElement.appendChild(cardFront);
+                    cardElement.appendChild(cardBack);
+                    cardElement.appendChild(nameTag);
+                    spinContainer.appendChild(cardElement);
+
+                    // 添加点击事件
+                    cardElement.addEventListener('click', () => selectCard(card, cardElement));
+                });
+            }
+
+            // 选择卡牌
+            function selectCard(card, cardElement) {
+                if (isCardSelected) return;
+
+                isCardSelected = true;
+                selectedCard = cardElement;
+                originalTransform = cardElement.style.transform;
+
+                // 停止旋转动画
+                spinContainer.style.animationPlayState = 'paused';
+
+                // 添加选中类名，触发入场动画
+                cardElement.classList.add('selected');
+
+                // 格式化内容
+                let formattedContent = '';
+                const contentLines = card.content.split('\n');
+
+                contentLines.forEach(line => {
+                    if (line.trim() !== '') {
+                        const colonIndex = line.indexOf('：');
+                        if (colonIndex !== -1) {
+                            const title = line.substring(0, colonIndex + 1);
+                            const text = line.substring(colonIndex + 1);
+                            formattedContent += `<p><strong>${title}</strong>${text}</p>`;
+                        } else {
+                            formattedContent += `<p>${line}</p>`;
+                        }
+                    }
+                });
+
+                // 更新信息面板
+                infoPanel.innerHTML = `
+                    <div class="panel-status-bar"></div>
+                    <div class="panel-corner top-left"></div>
+                    <div class="panel-corner top-right"></div>
+                    <div class="panel-corner bottom-left"></div>
+                    <div class="panel-corner bottom-right"></div>
+                    <div class="panel-header">
+                        <div class="panel-icon">${card.icon}</div>
+                        <h2 class="panel-title">${card.fullTitle}</h2>
+                    </div>
+                    <div class="panel-content">
+                        ${formattedContent}
+                    </div>
+                    <div class="rarity-badge">传说</div>
+                `;
+
+                // 显示信息面板和返回按钮
+                setTimeout(() => {
+                    infoPanel.classList.add('active');
+                    backBtn.classList.add('active');
+                }, 300);
+
+                // 其他卡牌淡出
+                document.querySelectorAll('.card').forEach(cardEl => {
+                    if (cardEl.id !== card.id) {
+                        cardEl.style.opacity = '0.3';
+                        cardEl.style.pointerEvents = 'none';
+                        cardEl.style.transform += ' scale(0.8)';
+                    }
+                });
+            }
+
+            // 返回卡牌轮盘
+            function backToCarousel() {
+                if (!isCardSelected) return;
+
+                // 移除选中类名
+                selectedCard.classList.remove('selected');
+
+                // 恢复选中卡牌位置
+                selectedCard.style.transition = 'all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                selectedCard.style.transform = originalTransform;
+                selectedCard.style.zIndex = '';
+
+                // 隐藏信息面板和返回按钮
+                infoPanel.classList.remove('active');
+                backBtn.classList.remove('active');
+
+                // 恢复其他卡牌
+                document.querySelectorAll('.card').forEach(cardEl => {
+                    cardEl.style.opacity = '1';
+                    cardEl.style.pointerEvents = 'all';
+                    cardEl.style.transform = cardEl.style.transform.replace(' scale(0.8)', '');
+                });
+
+                // 重新开始旋转动画
+                setTimeout(() => {
+                    spinContainer.style.animationPlayState = 'running';
+                }, 1000);
+
+                isCardSelected = false;
+                selectedCard = null;
+            }
+
+            // 初始化
+            createCards();
+            backBtn.addEventListener('click', backToCarousel);
+
+            // 添加鼠标拖拽旋转效果
+            let isDragging = false;
+            let startX, startY;
+            let rotationX = -10;
+            let rotationY = 0;
+
+            dragContainer.addEventListener('mousedown', (e) => {
+                if (isCardSelected) return;
+
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging || isCardSelected) return;
+
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+
+                // 减小旋转敏感度
+                rotationY += deltaX * 0.15;
+                rotationX = Math.max(-20, Math.min(15, rotationX - deltaY * 0.08));
+
+                dragContainer.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+
+                startX = e.clientX;
+                startY = e.clientY;
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            // 触摸设备支持
+            dragContainer.addEventListener('touchstart', (e) => {
+                if (isCardSelected) return;
+
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging || isCardSelected) return;
+
+                const deltaX = e.touches[0].clientX - startX;
+                const deltaY = e.touches[0].clientY - startY;
+
+                rotationY += deltaX * 0.15;
+                rotationX = Math.max(-20, Math.min(15, rotationX - deltaY * 0.08));
+
+                dragContainer.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                e.preventDefault();
+            });
+
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+        });
+    </script>
+</body>
+
+</html>

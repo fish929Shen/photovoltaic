@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>突围</title>
+    <link rel="stylesheet" href="./css/part1_fix_and_intro.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <style>
+        :root {
+            --neon-blue: #00f7ff;
+            --neon-purple: #b400ff;
+            --neon-cyan: #00ffd4;
+            --neon-yellow: #ffd700;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff88;
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(15, 15, 25, 0.9);
+            --glow: 0 0 20px;
+            --holographic-gradient: linear-gradient(135deg,
+                    rgba(0, 247, 255, 0.8) 0%,
+                    rgba(180, 0, 255, 0.8) 25%,
+                    rgba(255, 0, 255, 0.8) 50%,
+                    rgba(0, 255, 212, 0.8) 75%,
+                    rgba(0, 247, 255, 0.8) 100%);
+        }
+
+        body {
+            height: auto;
+            width: 100%;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: white;
+        }
+
+        /* 页面容器设置，允许垂直滚动 */
+        .full-container {
+            width: 100%;
+            position: relative;
+        }
+
+        /* 可滚动内容容器 */
+        .scroll-container {
+            overflow-y: auto;
+            height: calc(100vh - 60px);
+            /* 减去状态栏高度 */
+            padding-top: 60px;
+            /* 为状态栏预留空间 */
+        }
+
+        /* 页面样式 - 每个页面占满屏幕高度 */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+
+
+        /* 主能量核心光晕 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%;
+            height: 150%;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center,
+                    rgba(120, 210, 255, 0.4) 0%,
+                    rgba(120, 210, 255, 0) 60%);
+            animation: pulse 8s infinite ease-in-out;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 内层金色光晕 */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center,
+                    rgba(255, 215, 0, 0.3) 0%,
+                    rgba(255, 215, 0, 0) 50%);
+            animation: pulse 6s infinite ease-in-out 0.5s;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 脉冲动画 */
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.95);
+                opacity: 0.7;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(0.95);
+                opacity: 0.7;
+            }
+        }
+
+        button {
+            margin: 30px;
+            width: clamp(300px, 80vw, 400px);
+            height: 60px;
+            background: linear-gradient(145deg, rgba(0, 255, 158, 0.2) 0%, rgba(103, 231, 208, 0.2) 50%, rgba(96, 59, 189, 0.2) 100%);
+            border: none;
+            border-radius: 25px;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            color: #00eeff;
+            text-shadow: 0 0 5px #00eeff;
+            box-shadow: 0 0 10px rgba(103, 231, 208, 0.5),
+                inset 0 0 5px rgba(0, 255, 158, 0.5);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to bottom right,
+                    rgba(0, 255, 234, 0) 45%,
+                    rgba(0, 238, 255, 0.3) 50%);
+            transform: rotate(30deg);
+            animation: shine 10s infinite linear;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(103, 231, 208, 0.8),
+                inset 0 0 8px rgba(0, 255, 158, 0.8);
+            color: #67E7D0;
+            text-shadow: 0 0 8px #67E7D0;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        @keyframes shine {
+            0% {
+                left: -50%;
+                top: -50%;
+            }
+
+            100% {
+                left: 150%;
+                top: 150%;
+            }
+        }
+
+        /* 添加按钮边框效果 */
+        button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid transparent;
+            border-image: linear-gradient(145deg, #00ff9d, #67E7D0, #603BBD) 1;
+            border-radius: 5px;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            button {
+                margin: 20px;
+                height: 50px;
+            }
+
+            .income-text p {
+                font-size: clamp(1.5rem, 6vw, 2.3rem);
+                padding: 0 20px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            button {
+                margin: 15px;
+                height: 45px;
+            }
+        }
+
+        .bridge {
+            background-image: url(./img/part4-bg1.png);
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+
+        }
+
+        .end {
+            background-image: url(./img/part4-bg2.png);
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.365);
+            /* 黑色半透明叠加 */
+            background-blend-mode: overlay;
+            /* 混合模式（可选） */
+
+        }
+
+        /* 文字发光动画 */
+        @keyframes pulsate {
+            0% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+            }
+
+            50% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            }
+
+            100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff;
+            }
+        }
+
+        .bridge .bridge-text,
+        .end-text {
+            text-align: center;
+            font-size: 2.2rem;
+            line-height: 3;
+            animation: pulsate 2s infinite alternate;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-shadow: 0 0 10px currentColor;
+        }
+
+        /* 任务面板容器 */
+        .cyber-mission-vertical {
+            width: 90%;
+            max-width: 1000px;
+            margin: 100px auto;
+            padding: 20px;
+        }
+
+        /* 任务标题 */
+        .mission-header-vertical {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .mission-title-vertical {
+            font-size: 3rem;
+            color: #00eeff;
+            text-shadow: 0 0 10px var(--neon-cyan);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .mission-subtitle-vertical {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+        }
+
+        /* 任务列表 */
+        .mission-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* 任务项 */
+        .mission-item {
+            background: rgba(25, 25, 40, 0.7);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--neon-blue);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .mission-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.3);
+            border-color: var(--neon-green);
+        }
+
+        /* 任务图标 */
+        .mission-icon-vertical {
+            width: 60px;
+            height: 60px;
+            margin-right: 20px;
+            background: linear-gradient(135deg, var(--neon-blue), var(--neon-cyan));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        /* 图标内容 */
+        .icon-energy {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>');
+        }
+
+        .icon-breakthrough {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>');
+        }
+
+        .icon-tech {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M17 18V5h2v13h-2zm-6 0V2h2v16h-2zM5 18V9h2v9H5z"/></svg>');
+        }
+
+        .icon-global {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>');
+        }
+
+        /* 任务内容 */
+        .mission-content {
+            flex: 1;
+        }
+
+        .mission-item-title {
+            font-size: 2rem;
+            color: #00eeff;
+            margin-bottom: 15px;
+        }
+
+        .mission-item-text {
+            font-size: 1.6rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            text-indent: 2ch;
+        }
+
+        /* 进度条 */
+        .mission-progress-vertical {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .mission-progress-bar-vertical {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-green), var(--neon-cyan));
+            width: 0;
+            transition: width 1s ease;
+        }
+
+        /* 解锁动画 */
+        @keyframes unlock-vertical {
+            0% {
+                box-shadow: 0 0 5px var(--neon-green);
+            }
+
+            50% {
+                box-shadow: 0 0 20px var(--neon-green);
+            }
+
+            100% {
+                box-shadow: 0 0 5px var(--neon-green);
+            }
+        }
+
+        .unlocked-vertical {
+            animation: unlock-vertical 2s infinite;
+            border-color: var(--neon-green) !important;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+
+            .bridge-text,
+            .end-text {
+                font-size: 1.5rem;
+            }
+
+            .mission-title-vertical {
+                font-size: 2.5rem;
+            }
+
+            .mission-subtitle-vertical {
+                font-size: 1.3rem;
+            }
+
+            .mission-item {
+                padding: 20px;
+                flex-direction: column;
+            }
+
+            .mission-icon-vertical {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .mission-item-title {
+                font-size: 1.4rem;
+            }
+
+            .mission-item-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* 添加返回按钮样式 */
+        .back-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            background: var(--dark-bg);
+            border: 1px solid var(--neon-blue);
+            color: var(--neon-blue);
+            cursor: pointer;
+        }
+
+        /* 确保内容区域可滚动 */
+        .D-container>div {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 247, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.5);
+        }
+
+        .D-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background: var(--dark-bg);
+            width: 100%;
+            height: 100%;
+        }
+
+        /* B页面内容样式 */
+        .section-B-content {
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .income-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .box-bottom {
+            display: flex;
+            flex-direction: row;
+            gap: 2.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .income-text p {
+            text-align: center;
+            font-size: 2.5rem;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.92);
+            margin: 0;
+        }
+
+        .income-text p span {
+            color: #f9f002;
+            font-weight: 700;
+            text-shadow: 0 0 8px currentColor;
+            padding: 0 3px;
+        }
+
+        .box-bottom img {
+            max-width: 500px;
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .box-bottom img:hover {
+            transform: scale(1.05);
+        }
+
+        /* 导航指示器 - 右侧小点 */
+        .nav-indicators {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background-color: var(--neon-blue);
+            transform: scale(1.3);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        /* A页面样式 */
+        .section-A {
+            text-align: center;
+        }
+
+        .head img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .mission-item-text span {
+            color: #f9f002;
+            font-weight: 500;
+            text-shadow: 0 0 8px currentColor;
+            padding: 0 3px;
+            text-indent: 0;
+        }
+
+        .mission-bridge {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mission-bridge-text {
+            font-size: 2.5vw;
+            text-shadow: 0 0 8px currentColor;
+            margin: 0;
+        }
+
+        /* 箭头提示 */
+        /* 箭头样式 */
+        /* 滑动提示符容器 */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .scroll-arrow {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #a6a6a6;
+            border-left: none;
+            border-top: none;
+            transform: rotate(45deg);
+            animation: bounce 1.5s infinite;
+        }
+
+        /* 箭头动画 */
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0) rotate(45deg);
+            }
+
+            40% {
+                transform: translateY(10px) rotate(45deg);
+            }
+
+            60% {
+                transform: translateY(5px) rotate(45deg);
+            }
+        }
+
+        /* 滚动时的样式变化 */
+        body.scrolled .scroll-text {
+            opacity: 0.5;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <!-- 顶部生存条 -->
+    <div class="status-bar">
+        <!-- 头像 -->
+        <div class="player-avatar">
+            <img src="./img/part1-intro.png" alt="赛博朋克风格的游戏角色头像" class="avatar-image">
+        </div>
+
+        <!-- 生存条 -->
+        <div class="status-bars">
+            <div class="status-item health">
+                <span class="status-label">生命</span>
+                <div class="status-bar-container">
+                    <div class="status-fill" style="width: 30%;"></div>
+                </div>
+            </div>
+
+            <div class="status-item energy">
+                <span class="status-label">能量</span>
+                <div class="status-bar-container">
+                    <div class="status-fill" style="width: 30%;"></div>
+                </div>
+            </div>
+
+            <div class="status-item reputation">
+                <span class="status-label">声望</span>
+                <div class="status-bar-container">
+                    <div class="status-fill" style="width: 30%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增的两头粗中间细的线图案 -->
+        <div class="cyber-line">
+            <div class="cyber-line-inner"></div>
+        </div>
+    </div>
+
+    <!-- 左侧导航栏 -->
+    <div class="side-nav">
+        <div class="side-nav-item " data-nav="启航">
+            <span><a href="part1Embarkation.html">启航</a></span>
+        </div>
+        <div class="side-nav-item" data-nav="曙光">
+            <span><a href="part2Dawn.html">曙光</a></span>
+        </div>
+        <div class="side-nav-item" data-nav="困境">
+            <span><a href="part3Dilemma.html">困境</a></span>
+        </div>
+        <div class="side-nav-item active" data-nav="突围">
+            <span>突围</span>
+        </div>
+        <div class="bottom-line"></div> <!-- 竖线底部加粗 -->
+    </div>
+    <!-- 底部滚动提示 -->
+    <div class="scroll-indicator">
+        <span class="scroll-text">向下滑动</span>
+        <div class="scroll-arrow"></div>
+    </div>
+    <!-- 白场过渡 -->
+    <div class="loading">
+    </div>
+
+    <!-- 主容器 -->
+    <div class="full-container">
+        <!-- 可滚动内容 -->
+        <div class="scroll-container">
+            <!-- A页面 -->
+            <div class="section section-A" id="section-A">
+                <div class="head">
+                    <img src="./img/4.png" alt="突围">
+                </div>
+
+
+            </div>
+
+            <!-- B页面 -->
+            <div class="section section-B" id="section-B">
+                <div class="section-B-content">
+                    <div class="income-text">
+                        <div class="box-top">
+                            <p
+                                style="font-size: 3rem; margin-bottom: 1.5rem;font-weight: 800; color: #00eeff;text-shadow: 0 0 8px currentColor;">
+                                战略资源注入！
+                            </p>
+                            <p style="font-size: 2rem;">探索者光晟，点击获得应对困境的升级版<span>矛</span>和<span>盾</span></p>
+                            <p style="font-size: 2rem;">解锁维度级研发算力！</p>
+                        </div>
+                        <div class="box-bottom">
+                            <a href="javascript:void(0);" class="show-container" data-target="Mao">
+                                <img src="./img/mao.png" alt="矛">
+                            </a>
+                            <a href="javascript:void(0);" class="show-container" data-target="Dun">
+                                <img src="./img/dun.png" alt="盾">
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- B页面的子页面：Mao -->
+                    <div class="D-container Mao" id="mao-container" style="display: none;">
+                        <!-- 直接放入内容而非iframe -->
+                        <div style="width: 100%; height: 100%; padding: 20px;">
+                            <iframe src="./svg-mao.html" frameborder="0" allowfullscreen
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                        </div>
+                        <button class="back-button">返回</button>
+                    </div>
+
+                    <!-- B页面的子页面：Dun -->
+                    <div class="D-container Dun" id="dun-container" style="display: none;">
+                        <div style="width: 100%; height: 100%; padding: 20px;">
+                            <iframe src="./svg-dun.html" frameborder="0" allowfullscreen
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                        </div>
+                        <button class="back-button">返回</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 桥接部分 -->
+            <div class="bridge" id="section-bridge">
+                <p class="bridge-text">
+                    从政策的“稳”到技术的“进”，<br>从企业的“变”到个人的“为”，<br>这场突围没有捷径，<br>却有方向——让光伏不仅是“中国的武器”，<br>更是“世界的解药”。<br><br>当千万股力量拧成绳，<br>光伏的冬天，<br>终将迎来万物生长的春天。<br>光伏拯救世界的前路漫长，<br>但光晟明白，<br>光伏的未来一片光明。
+                </p>
+            </div>
+
+            <!-- 垂直赛博任务面板 -->
+            <div class="cyber-mission-vertical" id="section-missions">
+                <div class="mission-bridge">
+                    <p class="mission-bridge-text"
+                        style="font-size:4vw;margin-bottom: 1rem; color: #00eeff;font-weight: 800;">
+
+                        <span><img src="./img/dingwei.png" alt="坐标logo" style="width: 4vw; height: auto;"></span>
+                        坐标锁定：新纪元！
+                    </p>
+                    <p class="mission-bridge-text">光晟小队，即刻向深空进发</p>
+                    <p class="mission-bridge-text">——新的光伏征程等待你们的探索！</p>
+                </div>
+                <div class="mission-header-vertical">
+                    <h2 class="mission-title-vertical" style="font-size: 4vw;">光伏发展的未来目标</h2>
+                </div>
+
+                <div class="mission-list">
+                    <!-- 任务1 -->
+                    <div class="mission-item" onclick="unlockMissionVertical(this)">
+                        <div class="mission-icon-vertical icon-energy"></div>
+                        <div class="mission-content">
+                            <h3 class="mission-item-title">能源转型之规模扩展</h3>
+                            <p class="mission-item-text" style="text-indent: 0;">
+
+                                <span>【任务核心】大规模提升光伏在能源结构中的占比，契合国家能源转型战略。</span>
+                            </p>
+                            <p class="mission-item-text">
+                                《中共中央国务院关于加快经济社会发展全面绿色转型的意见》明确，到 2030年非化石能源消费比重需提至25%左右。国务院要求2025年配电网具备
+                                5亿千瓦分布式新能源接入能力，为光伏大规模接入预留空间。未来西部、北部等地还将涌现更多大型光伏基地，持续推动能源结构清洁化。
+                            </p>
+                            <div class="mission-progress-vertical">
+                                <div class="mission-progress-bar-vertical" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 任务2 -->
+                    <div class="mission-item" onclick="unlockMissionVertical(this)">
+                        <div class="mission-icon-vertical icon-breakthrough"></div>
+                        <div class="mission-content">
+                            <h3 class="mission-item-title">消纳瓶颈之系统性突破</h3>
+                            <p class="mission-item-text" style="text-indent: 0;">
+                                <span> 【任务核心】构建高效消纳体系，保障光伏电力顺畅入网与使用。</span>
+                            </p>
+                            <p class="mission-item-text">
+                                国务院《2024—2025年节能降碳行动方案》更将新能源利用率下限从95%放宽至90%，大幅缓解弃光压力。</p>
+                            <p class="mission-item-text">
+
+                                国家能源局《配电网高质量发展行动实施方案（2024—2027年）》要求“结合分布式新能源的资源条件、开发布局和投产时序，有针对性加强配电网建设”，并明确提出到2025年配电网需具备5亿千瓦左右分布式新能源接入能力。未来随着智能电网、柔性输电等技术在全国推广，光伏消纳率有望逐年提升，弃光现象将得到极大改善。
+                            </p>
+                            <div class="mission-progress-vertical">
+                                <div class="mission-progress-bar-vertical" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 任务3 -->
+                    <div class="mission-item" onclick="unlockMissionVertical(this)">
+                        <div class="mission-icon-vertical icon-tech"></div>
+                        <div class="mission-content">
+                            <h3 class="mission-item-title">技术突破之巅峰攀登</h3>
+                            <p class="mission-item-text" style="text-indent: 0;">
+                                <span>【任务核心】通过持续技术创新，提升光伏产业核心竞争力。</span>
+                            </p>
+                            <p class="mission-item-text">
+                                当前 N 型电池技术（TOPCon、HJT、BC）正激烈迭代，企业需持续攻坚转换效率与度电成本难题。天合光能计划建设的钙钛矿中试线，组件效率预计较传统晶体硅提升超 4
+                                个百分点；协鑫集团测算显示，钙钛矿与晶硅叠层组件理论效率高
+                                50%、成本低 20%、碳足迹降超 50%，量产突破将成行业奇点。产业链创新聚焦材料低碳化、组件高效化、发电低成本化，AI 技术更让光储设备实现 “自调优、自预测、自适应”。
+                            </p>
+                            <div class="mission-progress-vertical">
+                                <div class="mission-progress-bar-vertical" style="width: 65%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 任务4 -->
+                    <div class="mission-item" onclick="unlockMissionVertical(this)">
+                        <div class="mission-icon-vertical icon-global"></div>
+                        <div class="mission-content">
+                            <h3 class="mission-item-title">市场拓展之全球征战</h3>
+                            <p class="mission-item-text" style="text-indent: 0;">
+                                <span>【任务核心】国内外市场并重，提升中国光伏在全球市场中的份额。</span>
+                            </p>
+                            <p class="mission-item-text">
+                                国内市场增长动能强劲，但城市分布式光伏受屋顶整合难、政策细则不完善等制约。国家能源局修订的《分布式光伏发电开发建设管理办法》正破解这些问题，叠加虚拟电厂、绿电园区等新模式推广，市场空间将持续扩容。​
+                            </p>
+                            <p class="mission-item-text">
+                                国际市场上，晶科能源等企业已在东南亚、欧美布局制造基地与营销网络。据行业预测，未来 5 年全球新能源投资半数将流向光伏，2030 年全球总装机或达
+                                5200-5800GW，中国有望达
+                                1800-2300GW。企业需强化本地化运营，应对贸易摩擦，以技术质量开拓市场。​
+                            </p>
+                            <div class="mission-progress-vertical">
+                                <div class="mission-progress-bar-vertical" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 结尾部分 -->
+            <div class="end" id="section-end">
+                <p class="end-text">
+                    从依附欧美，<br>
+                    到荒漠中矗立的万顷蓝海——<br>
+                    这非天赐，<br>
+                    而是靠一代代人的拼搏，<br>
+                    从有到无走出的通天路。<br>
+                    <span style="color: #ffd700;">[我们不是相信希望才坚持，而是坚持着才看得到希望。]</span><br><br>
+                    江湖传言“救世”，<br>不过是像光晟一样的一群痴人负重前行，<br>二十载寒暑不辍，<br>把不可能之事，<br>做得理所当然。<br><br>
+                    光伏列阵映照之下，<br><span style="color: #ffd700;">[能源危机]</span>已现崩裂之相。<span
+                        style="font-weight: 700; font-size: 2.5rem;"><br>中国光伏长征，<br>前路虽艰，<br>然大道如虹。</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导航指示器 -->
+    <div class="nav-indicators">
+        <div class="nav-dot active" data-section="section-A"></div>
+        <div class="nav-dot" data-section="section-B"></div>
+        <div class="nav-dot" data-section="section-bridge"></div>
+        <div class="nav-dot" data-section="section-missions"></div>
+        <div class="nav-dot" data-section="section-end"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const scrollContainer = document.querySelector('.scroll-container');
+            const sections = document.querySelectorAll('.section, .bridge, .cyber-mission-vertical, .end');
+            const navDots = document.querySelectorAll('.nav-dot');
+            let lastScrollTop = 0;
+            let jumpTimer = null;
+
+            // 获取状态条元素
+            const healthFill = document.querySelector('.health .status-fill');
+            const energyFill = document.querySelector('.energy .status-fill');
+            const reputationFill = document.querySelector('.reputation .status-fill');
+
+            // 获取当前进度条的初始宽度（保持现有30%状态）
+            const getInitialWidth = () => {
+                // 尝试从元素获取当前宽度，默认30%
+                const width = parseInt(healthFill.style.width) || 30;
+                return Math.min(100, Math.max(0, width)); // 确保在0-100范围内
+            };
+            const initialWidth = getInitialWidth();
+
+            // 更新导航点状态
+            function updateNavDots() {
+                const scrollPosition = scrollContainer.scrollTop;
+
+                sections.forEach((section, index) => {
+                    const sectionTop = section.offsetTop - 100; // 偏移量，提前激活导航点
+                    const sectionHeight = section.offsetHeight;
+
+                    // 检查当前滚动位置是否在当前区域范围内
+                    if (scrollPosition >= sectionTop &&
+                        scrollPosition < sectionTop + sectionHeight) {
+                        navDots.forEach(dot => dot.classList.remove('active'));
+                        navDots[index].classList.add('active');
+                    }
+                });
+            }
+
+            // 更新状态条宽度
+            function updateStatusBars() {
+                // 计算滚动进度
+                const scrollHeight = scrollContainer.scrollHeight;
+                const clientHeight = scrollContainer.clientHeight;
+                const scrollTop = scrollContainer.scrollTop;
+                const maxScroll = scrollHeight - clientHeight;
+
+                // 防止除以零错误
+                if (maxScroll <= 0) return;
+
+                // 计算滚动百分比 (0 到 1 之间)
+                const scrollPercentage = Math.min(1, Math.max(0, scrollTop / maxScroll));
+
+                // 从当前30%进度条状态开始，随滚动增加到100%
+                const width = initialWidth + (scrollPercentage * (100 - initialWidth));
+
+                // 应用宽度
+                healthFill.style.width = `${width}%`;
+                energyFill.style.width = `${width}%`;
+                reputationFill.style.width = `${width}%`;
+            }
+
+            // 点击导航点滚动到对应区域
+            navDots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    const targetSection = sections[index];
+                    scrollContainer.scrollTo({
+                        top: targetSection.offsetTop,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // 合并滚动事件监听
+            scrollContainer.addEventListener('scroll', function () {
+                // 更新导航点
+                updateNavDots();
+
+                // 更新状态条
+                updateStatusBars();
+
+                // 顶部向上滑动跳转逻辑
+                const currentScrollTop = scrollContainer.scrollTop;
+
+                // 清除之前的定时器
+                if (jumpTimer) clearTimeout(jumpTimer);
+
+                // 检测是否在顶部且向上滚动
+                if (currentScrollTop === 0 && lastScrollTop <= currentScrollTop) {
+                    jumpTimer = setTimeout(() => {
+                        // 再次确认仍在顶部
+                        if (scrollContainer.scrollTop === 0) {
+                            loading.in('./part3Dilemma.html');
+                        }
+                    }, 150); // 延迟防止误触
+                }
+
+                lastScrollTop = currentScrollTop;
+            });
+
+            // 任务解锁动画
+            window.unlockMissionVertical = function (item) {
+                item.classList.add('unlocked-vertical');
+
+                // 模拟进度条动画
+                const progressBar = item.querySelector('.mission-progress-bar-vertical');
+                const currentWidth = parseInt(progressBar.style.width);
+                const newWidth = Math.min(100, currentWidth + 15);
+
+                progressBar.style.width = newWidth + '%';
+
+                // 3秒后移除解锁动画
+                setTimeout(() => {
+                    item.classList.remove('unlocked-vertical');
+                }, 3000);
+            }
+
+            // 页面加载时设置初始进度
+            const progressBars = document.querySelectorAll('.mission-progress-bar-vertical');
+            progressBars.forEach(bar => {
+                // 使用预设的进度值
+                const width = bar.style.width;
+                if (width) {
+                    // 先设置为0，然后触发动画
+                    bar.style.width = '0';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 500);
+                }
+            });
+
+            // 加载动画控制
+            const loading = {
+                container: document.querySelector(".loading"),
+                in(target) {
+                    this.container.classList.remove("loading_out");
+                    setTimeout(() => {
+                        window.location.href = target;
+                    }, 1000)
+                },
+                out() {
+                    this.container.classList.add("loading_out");
+                }
+            };
+
+            // 页面加载完成后隐藏loading动画
+            window.addEventListener("load", () => {
+                loading.out();
+                // 初始触发一次状态条更新，确保显示正确
+                updateStatusBars();
+            });
+
+            // 显示容器逻辑
+            document.querySelectorAll('.show-container').forEach(link => {
+                link.addEventListener('click', function () {
+                    const target = this.getAttribute('data-target');
+                    // 隐藏所有容器
+                    document.querySelectorAll('.D-container').forEach(container => {
+                        container.style.display = 'none';
+                    });
+                    // 隐藏原文本
+                    document.querySelector('.income-text').style.display = 'none';
+                    // 显示目标容器
+                    document.getElementById(`${target.toLowerCase()}-container`).style.display = 'block';
+                });
+            });
+
+            // 返回按钮逻辑
+            document.querySelectorAll('.back-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    // 隐藏当前容器
+                    this.closest('.D-container').style.display = 'none';
+                    // 显示原文本
+                    document.querySelector('.income-text').style.display = 'flex';
+                });
+            });
+        });
+
+    </script>
+</body>
+
+</html>

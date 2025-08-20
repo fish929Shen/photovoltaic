@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>曙光
+    </title>
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/part2.css">
+    <link rel="stylesheet" href="./css/part2-game.css">
+    <!-- 引入Font Awesome图标库 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/part1_fix_and_intro.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+
+            height: 330vh;
+            width: 100%;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'Rajdhani', 'Arial', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            text-align: center
+        }
+
+        /* 这是一个没招了的按钮 */
+        .next-chapter-btn {
+            display: inline-block;
+            width: 100px;
+            height: 50px;
+            border-radius: 10%;
+            background-color: #2b9797c5;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            text-decoration: none;
+            font-family: sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        /* 悬停效果 */
+        .next-chapter-btn:hover {
+            background-color: #2b9797;
+            transform: scale(1.05);
+        }
+
+        /* 微妙的网格背景（降低存在感） */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(5, 217, 232, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(5, 217, 232, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: -2;
+            opacity: 0.5;
+        }
+
+        /* 辉光叠加层 */
+        .glow-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 30% 40%,
+                    rgba(103, 231, 208, 0.15) 0%,
+                    transparent 30%),
+                radial-gradient(circle at 70% 60%,
+                    rgba(96, 59, 189, 0.15) 0%,
+                    transparent 30%);
+            z-index: -1;
+            /* animation: glow-pulse 20s infinite alternate; */
+            pointer-events: none;
+            /* 防止遮挡交互 */
+        }
+
+        /* 添加激活状态的动画 */
+        .glow-overlay.animate-active {
+            animation: glow-pulse 20s infinite alternate;
+        }
+
+        /* 星星容器 - 全屏固定定位 */
+        #stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            /* 防止遮挡交互 */
+            z-index: -1;
+            /* 置于内容下方 */
+            overflow: hidden;
+        }
+
+        /* 星星基础样式 */
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            /* animation: twinkle 3s infinite alternate; */
+        }
+
+        /* 添加激活状态的动画 */
+        .star.animate-active {
+            animation: twinkle 3s infinite alternate;
+        }
+
+        /* 关键帧动画 */
+        @keyframes glow-pulse {
+            0% {
+                opacity: 0.3;
+                transform: scale(0.95);
+            }
+
+            50% {
+                opacity: 0.7;
+                transform: scale(1.05);
+            }
+
+            100% {
+                opacity: 0.3;
+                transform: scale(0.95);
+            }
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+
+        /* 人物对话（超多） */
+        .dialog-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 动画定义 */
+        @keyframes dialog-pulse-slow {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes dialog-glow {
+            0% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #00F0FF, 0 0 15px #00F0FF;
+            }
+
+            100% {
+                text-shadow: 0 0 10px #fff, 0 0 20px #00F0FF, 0 0 30px #00F0FF, 0 0 40px #00F0FF;
+            }
+        }
+
+        @keyframes dialog-float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes dialog-rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes dialog-fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 自定义工具类 */
+        .dialog-text-shadow-cyber {
+            text-shadow: 0 0 5px #fff, 0 0 10px #00F0FF, 0 0 15px #00F0FF;
+        }
+
+        .dialog-border-glow {
+            box-shadow: 0 0 5px #00F0FF, 0 0 10px #00F0FF, inset 0 0 5px #00F0FF;
+        }
+
+        .dialog-border-glow-purple {
+            box-shadow: 0 0 5px #9D4EDD, 0 0 10px #9D4EDD, inset 0 0 5px #9D4EDD;
+        }
+
+        .dialog-border-glow-pink {
+            box-shadow: 0 0 5px #FF2A6D, 0 0 10px #FF2A6D, inset 0 0 5px #FF2A6D;
+        }
+
+        .dialog-grid-bg {
+            background-image:
+                linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .dialog-hidden {
+            display: none;
+        }
+
+        .dialog-reveal {
+            animation: dialog-fadeIn 0.6s ease-out forwards;
+        }
+
+        /* 页面结构样式 */
+        #dialog-particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .dialog-grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .dialog-top-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, #00F0FF, #9D4EDD, #FF2A6D);
+            z-index: 20;
+        }
+
+        .dialog-top-decoration-light {
+            position: fixed;
+            top: 4px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #00F0FF, transparent);
+            z-index: 20;
+            opacity: 0.7;
+        }
+
+        .dialog-page-content {
+            position: relative;
+            z-index: 30;
+            padding: 80px 0;
+            /* 增加顶部 padding 避免内容太靠上 */
+        }
+
+        /* 头部样式 - 放大标题 */
+        .dialog-header {
+            text-align: center;
+            margin-bottom: 100px;
+            /* 增加底部间距 */
+            position: relative;
+        }
+
+        .dialog-header h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            /* 大幅放大标题 */
+            font-weight: bold;
+            color: #00F0FF;
+            animation: dialog-glow 2s ease-in-out infinite alternate;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .dialog-header h1 span {
+            color: #9D4EDD;
+        }
+
+        .dialog-header p {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            /* 放大副标题 */
+            color: rgba(0, 240, 255, 0.8);
+            margin-bottom: 35px;
+        }
+
+        .dialog-info-tip {
+            display: inline-block;
+            padding: 12px 24px;
+            /* 放大提示框 */
+            border: 1px solid #F9F002;
+            color: #F9F002;
+            border-radius: 4px;
+            animation: dialog-pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            cursor: default;
+            font-size: 1.1rem;
+            /* 放大提示文字 */
+        }
+
+        .dialog-info-tip i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .dialog-decorative-element {
+            position: absolute;
+            border-radius: 50%;
+            animation: dialog-float 6s ease-in-out infinite;
+        }
+
+        .dialog-decorative-1 {
+            top: -40px;
+            left: -40px;
+            width: 80px;
+            height: 80px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .dialog-decorative-2 {
+            bottom: -20px;
+            right: -20px;
+            width: 60px;
+            height: 60px;
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            animation-delay: 2s;
+        }
+
+        /* 主要内容样式 - 增加间距 */
+        .dialog-main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 120px;
+            /* 增加人物卡片之间的距离 */
+            margin-bottom: 100px;
+        }
+
+        .dialog-person-card {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .dialog-person-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dialog-card-reversed {
+            flex-direction: row-reverse;
+        }
+
+        /* 放大头像 */
+        .dialog-person-avatar {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid #0D0221;
+            z-index: 10;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dialog-person-avatar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+        }
+
+        .dialog-avatar-blue {
+            background-color: #00F0FF;
+            color: #0D0221;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5), 0 0 40px rgba(0, 240, 255, 0.3);
+        }
+
+        .dialog-avatar-purple {
+            background-color: #9D4EDD;
+            color: #0D0221;
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.5), 0 0 40px rgba(157, 78, 221, 0.3);
+        }
+
+        .dialog-avatar-pink {
+            background-color: #FF2A6D;
+            color: #0D0221;
+            box-shadow: 0 0 20px rgba(255, 42, 109, 0.5), 0 0 40px rgba(255, 42, 109, 0.3);
+        }
+
+        .dialog-person-avatar i {
+            font-size: 100px;
+            /* 放大图标 */
+            z-index: 1;
+        }
+
+        .dialog-person-avatar:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .dialog-avatar-pulse {
+            animation: dialog-pulse-slow 2s infinite;
+        }
+
+        .dialog-card-content {
+            flex: 1;
+            padding: 0 50px;
+            /* 增加内边距 */
+            position: relative;
+        }
+
+        .dialog-card-reversed .dialog-card-content {
+            text-align: right;
+        }
+
+        /* 放大姓名和标题 */
+        .dialog-person-name {
+            font-size: 34px;
+            /* 放大姓名 */
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .dialog-name-blue {
+            color: #00F0FF;
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.7);
+        }
+
+        .dialog-name-purple {
+            color: #9D4EDD;
+            text-shadow: 0 0 5px rgba(157, 78, 221, 0.7);
+        }
+
+        .dialog-name-pink {
+            color: #FF2A6D;
+            text-shadow: 0 0 5px rgba(255, 42, 109, 0.7);
+        }
+
+        .dialog-person-title {
+            font-size: 22px;
+            /* 放大头衔 */
+            font-weight: normal;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        /* 放大对话内容 */
+        .dialog-dialogue {
+            background-color: rgba(13, 2, 33, 0.6);
+            border-radius: 8px;
+            padding: 35px;
+            /* 增加内边距 */
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            position: relative;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            /* 放大对话文字 */
+        }
+
+        .dialog-dialogue-blue {
+            border: 1px solid rgba(0, 240, 255, 0.5);
+        }
+
+        .dialog-dialogue-purple {
+            border: 1px solid rgba(157, 78, 221, 0.5);
+        }
+
+        .dialog-dialogue-pink {
+            border: 1px solid rgba(255, 42, 109, 0.5);
+        }
+
+        /* 对话气泡指向箭头 */
+        .dialog-dialogue::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -20px;
+            transform: translateY(-50%);
+            border-width: 15px 20px 15px 0;
+            border-style: solid;
+        }
+
+        .dialog-dialogue-blue::before {
+            border-color: transparent rgba(0, 240, 255, 0.5) transparent transparent;
+        }
+
+        .dialog-dialogue-purple::before {
+            border-color: transparent rgba(157, 78, 221, 0.5) transparent transparent;
+        }
+
+        .dialog-dialogue-pink::before {
+            border-color: transparent rgba(255, 42, 109, 0.5) transparent transparent;
+        }
+
+        .dialog-card-reversed .dialog-dialogue::before {
+            left: auto;
+            right: -20px;
+            border-width: 15px 0 15px 20px;
+        }
+
+        .dialog-card-reversed .dialog-dialogue-blue::before {
+            border-color: transparent transparent transparent rgba(0, 240, 255, 0.5);
+        }
+
+        .dialog-card-reversed .dialog-dialogue-purple::before {
+            border-color: transparent transparent transparent rgba(157, 78, 221, 0.5);
+        }
+
+        .dialog-card-reversed .dialog-dialogue-pink::before {
+            border-color: transparent transparent transparent rgba(255, 42, 109, 0.5);
+        }
+
+        /* 放大详情内容 */
+        .dialog-detail-content {
+            background-color: rgba(13, 2, 33, 0.8);
+            border-radius: 8px;
+            padding: 35px;
+            /* 增加内边距 */
+            margin-top: 25px;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.8;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s ease-out, opacity 0.5s ease;
+            opacity: 0;
+            font-size: 1.1rem;
+            /* 放大详情文字 */
+        }
+
+        .dialog-detail-content.visible {
+            max-height: 800px;
+            /* 增加最大高度以适应更多内容 */
+            opacity: 1;
+        }
+
+        .dialog-detail-blue {
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+        }
+
+        .dialog-detail-purple {
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            box-shadow: 0 0 15px rgba(157, 78, 221, 0.1);
+        }
+
+        .dialog-detail-pink {
+            border: 1px solid rgba(255, 42, 109, 0.3);
+            box-shadow: 0 0 15px rgba(255, 42, 109, 0.1);
+        }
+
+        .dialog-detail-title {
+            color: #F9F002;
+            font-size: 24px;
+            /* 放大详情标题 */
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px rgba(249, 240, 2, 0.5);
+        }
+
+        .dialog-stats-container {
+            margin-top: 30px;
+            padding-top: 30px;
+        }
+
+        .dialog-stats-blue {
+            border-top: 1px solid rgba(0, 240, 255, 0.2);
+        }
+
+        .dialog-stats-purple {
+            border-top: 1px solid rgba(157, 78, 221, 0.2);
+        }
+
+        .dialog-stats-pink {
+            border-top: 1px solid rgba(255, 42, 109, 0.2);
+        }
+
+        .dialog-stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            /* 增加间距 */
+        }
+
+        .dialog-card-reversed .dialog-stat-row {
+            flex-direction: row-reverse;
+        }
+
+        .dialog-stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            /* 放大统计标签 */
+        }
+
+        .dialog-stat-value {
+            font-weight: bold;
+            font-size: 1.2rem;
+            /* 放大统计数值 */
+        }
+
+        /* 放大进度条 */
+        .dialog-progress-bar {
+            width: 100%;
+            height: 10px;
+            /* 增加进度条高度 */
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .dialog-progress-fill {
+            height: 100%;
+            transition: width 1.5s ease-out;
+            width: 0;
+        }
+
+        .dialog-detail-content.visible .dialog-progress-fill {
+            width: var(--width, 0%);
+        }
+
+        .dialog-fill-blue {
+            background-color: #00F0FF;
+        }
+
+        .dialog-fill-purple {
+            background-color: #9D4EDD;
+        }
+
+        .dialog-fill-pink {
+            background-color: #FF2A6D;
+        }
+
+        /* 连接线条 */
+        .dialog-connection-line {
+            position: absolute;
+            left: 50%;
+            width: 2px;
+            background: linear-gradient(to bottom, rgba(0, 240, 255, 0), rgba(0, 240, 255, 0.5), rgba(0, 240, 255, 0));
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+
+        /* 页脚样式 - 放大字体 */
+        .dialog-footer {
+            margin-top: 120px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(0, 240, 255, 0.3);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+            /* 放大页脚文字 */
+        }
+
+        .dialog-footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0 40px;
+        }
+
+        .dialog-footer-link {
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.3s ease;
+            font-size: 22px;
+            /* 放大图标 */
+        }
+
+        .dialog-footer-link.blue:hover {
+            color: #00F0FF;
+        }
+
+        .dialog-footer-link.purple:hover {
+            color: #9D4EDD;
+        }
+
+        .dialog-footer-link.pink:hover {
+            color: #FF2A6D;
+        }
+
+        /* 响应式设计 - 确保在小屏幕上字体仍然合适 */
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+
+            .dialog-person-card,
+            .dialog-person-card.dialog-card-reversed {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .dialog-card-content,
+            .dialog-card-reversed .dialog-card-content {
+                padding: 35px 0 0 0;
+                text-align: center;
+                width: 100%;
+            }
+
+            .dialog-dialogue::before,
+            .dialog-card-reversed .dialog-dialogue::before {
+                display: none;
+            }
+
+            .dialog-person-avatar {
+                width: 220px;
+                height: 220px;
+            }
+
+            .dialog-person-avatar i {
+                font-size: 80px;
+            }
+
+            .dialog-person-name {
+                font-size: 28px;
+            }
+
+            .dialog-person-title {
+                font-size: 18px;
+            }
+
+            .dialog-stat-row,
+            .dialog-card-reversed .dialog-stat-row {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+
+        .part2-gongxun-img {
+            transition: transform 0.3s ease;
+            /* 放大效果过渡 */
+
+            border-radius: 50%;
+            animation: pulse-glow 2s infinite;
+            /* 应用闪烁动画 */
+            transition: all 0.3s ease;
+            /* 平滑过渡效果 */
+        }
+
+        .part2-gongxun-img:hover {
+            transform: scale(1.1);
+            /* 鼠标悬停时放大 */
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                /* box-shadow: 0 0 5px rgba(255, 215, 0, 0.7),
+                    0 0 10px rgba(255, 215, 0, 0.5),
+                    0 0 15px rgba(255, 215, 0, 0.3); */
+                transform: scale(1);
+            }
+
+            50% {
+                /* box-shadow: 0 0 10px rgba(255, 215, 0, 0.9),
+                    0 0 20px rgba(255, 215, 0, 0.7),
+                    0 0 30px rgba(255, 215, 0, 0.5); */
+                transform: scale(1.02);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部生存条 -->
+    <div class="status-bar">
+        <!-- 头像 -->
+        <div class="player-avatar">
+            <img src="./img/part1-intro.png" alt="赛博朋克风格的游戏角色头像" class="avatar-image">
+        </div>
+
+        <!-- 生存条 -->
+        <div class="status-bars">
+            <div class="status-item health">
+                <span class="status-label">生命</span>
+                <div class="status-bar-container">
+                    <div class="status-fill" style="width: 70%;"></div>
+                </div>
+            </div>
+
+            <div class="status-item energy">
+                <span class="status-label">能量</span>
+                <div class="status-bar-container">
+                    <div class="status-fill" style="width: 70%;"></div>
+                </div>
+            </div>
+
+            <div class="status-item reputation">
+                <span class="status-label">声望</span>
+                <div class="status-bar-container">
+                    <div class="status-fill" style="width: 70%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增的两头粗中间细的线图案 -->
+        <div class="cyber-line">
+            <div class="cyber-line-inner"></div>
+        </div>
+    </div>
+
+    <!-- 左侧导航栏 -->
+    <div class="side-nav">
+        <div class="side-nav-item" data-nav="启航">
+            <span><a href="part1Embarkation.html">启航</a></span>
+        </div>
+        <div class="side-nav-item active" data-nav="曙光">
+
+            <span>曙光</span>
+        </div>
+        <div class="side-nav-item" data-nav="困境">
+            <span><a href="part3Dilemma.html">困境</a></span>
+        </div>
+        <div class="side-nav-item" data-nav="突围">
+            <span><a href="part4Escape.html">突围</a></span>
+        </div>
+        <div class="bottom-line"></div> <!-- 竖线底部加粗 -->
+    </div>
+    <!-- 底部滚动提示 -->
+    <div class="scroll-indicator">
+        <div class="scroll-text">向下滑动</div>
+        <div class="scroll-arrow"></div>
+    </div>
+
+    <!-- 白场过渡 -->
+    <div class="loading"></div>
+    <!-- 正文 -->
+    <div class="content">
+        <!-- 头页 -->
+        <div class="head">
+            <img src="./img/2.png" alt="曙光">
+        </div>
+        <!-- 添加的文字内容 -->
+        <div class="text-animation-container">
+            <div class="text-wrapper">
+                <div class="cyber-text text-1" id="text1">
+                    <span style="color: #fff; text-shadow: 0 0 10px var(#fff), 0 0 20px var(--neon-purple);">
+                        [能源危机]</span>日益逼近，但在能源结构调整过程中，<br>中国目前已实现从以煤炭为主的能源结构到多元协同的转型突破。<br>
+                    探索者光晟，功勋认证！
+                </div>
+
+                <div class="cyber-text text-2" id="text2">
+                    <p>
+                        点击激活你的<span
+                            style="color: #fff; text-shadow: 0 0 10px var(#fff), 0 0 20px var(--neon-purple);">[速度与规模领跑全球]</span>光伏长征成就勋章
+                    </p>
+                    <p>
+                        这是属于开拓者的荣光时刻！
+                    </p>
+                    <a href="#part2-game"><img src="./img/part2-gongxun.png" class="part2-gongxun-img" alt="成就勋章"
+                            style="width: 200px;height: auto;load:lazy;"></a>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+    <!-- 动态星星容器 -->
+    <div id="stars-container"></div>
+    <!-- 辉光背景层 -->
+    <div class="glow-overlay"></div>
+
+    <!-- 赛博风格任务完成通告提示框 -->
+
+    <!-- 主要内容容器 -->
+    <div class="container" id="game">
+        <div class="main-card">
+            <!-- 标题区域 -->
+            <header class="header title-decoration">
+                <h1 id="part2-game">
+                    <span class="glow-text">光伏发展</span>
+                    <span class="neon-pink">目前成就</span>
+                </h1>
+                <p class="neon-pink">PHOTOVOLTAIC DEVELOPMENT ACHIEVEMENTS</p>
+            </header>
+
+            <!-- 修改导航栏部分 -->
+            <nav class="nav-container">
+                <div class="nav-buttons">
+                    <button class="tab-btn active" data-tab="tab1">
+                        <i class="fa fa-pie-chart"></i>
+                        <span>能源装机占比</span>
+                    </button>
+                    <button class="tab-btn" data-tab="tab2">
+                        <i class="fa fa-line-chart"></i>
+                        <span>光伏装机容量</span>
+                    </button>
+                    <button class="tab-btn" data-tab="tab3">
+                        <i class="fa fa-map-o"></i>
+                        <span>各省分布</span>
+                    </button>
+                    <button class="tab-btn" data-tab="tab4">
+                        <i class="fa fa-bolt"></i>
+                        <span>发电量</span>
+                    </button>
+                    <button class="tab-btn" data-tab="tab5">
+                        <i class="fa fa-percent"></i>
+                        <span>利用率</span>
+                    </button>
+                </div>
+            </nav>
+            <!-- 内容区域 -->
+            <div class="content-area">
+                <!-- 不同类型能源装机占比 -->
+                <div id="tab1" class="tab-content active">
+                    <div class="card-grid">
+                        <div class="stats-card text-card">
+                            <h2><i class="fa fa-bolt"></i>不同类型能源装机占比</h2>
+                            <div class="text-content">
+                                <p>
+                                    中国新能源发展迅速，年均保持两位数的增长率。光伏装机一骑绝尘，稳居第一位。提前6年多完成中国在气候雄心峰会上承诺的"到2030年中国风电、太阳能发电总装机容量达到12亿千瓦时以上"的目标。
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="stats-card chart-card">
+                            <div id="visualization1" class="chart-container">
+                                <img src="./img/part2-char1.png" alt="能源装机占比图表" style="load:lazy;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 光伏装机容量 -->
+                <div id="tab2" class="tab-content">
+                    <div class="card-grid">
+                        <div class="stats-card text-card">
+                            <h2><i class="fa fa-sun-o"></i>光伏装机容量</h2>
+                            <div class="text-content">
+                                <p>
+                                    截至2024年底，中国光伏装机总容量突破8.4亿千瓦，与2013年相比，装机量增长180多倍，年均增长约60%，年新增和累计装机容量均位列全球第一。
+                                </p>
+                                <p>
+                                    2025年6月24日，中国光伏发电累计装机规模突破10亿千瓦，占中国总发电装机容量的比重达30%，推动新能源迈上新台阶。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="stats-card chart-card">
+                            <div id="visualization2" class="chart-container">
+                                <img src="./img/part2-char2.png" alt="光伏装机容量图表" style="load:lazy;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 各省光伏装机容量 -->
+                <div id="tab3" class="tab-content">
+                    <div class="card-grid">
+                        <div class="stats-card text-card">
+                            <h2><i class="fa fa-map-marker"></i>各省光伏装机容量</h2>
+                            <div class="text-content">
+                                <p>
+                                    从中国光伏区域发展看，在2024年各省新增装机容量中，新疆、内蒙、江苏三省增量显著，新增光伏规模均超过2000万千瓦，占总新增规模1/3。
+                                </p>
+                                <p>
+                                    呈现出"东部提质、中部扩容、西部提速"的鲜明特征。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="stats-card chart-card">
+                            <div id="visualization3" class="chart-container">
+                                <iframe src="./part2-chart3.html" frameborder="0"
+                                    style="width:100%; height:100%;load:lazy;"></iframe>
+                                <p style="font-size: smaller; color: rgba(240, 248, 255, 0.644);line-height: 3;">
+                                    鼠标放在地图上滚动滑轮可以放大地图</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 光伏装机发电量 -->
+                <div id="tab4" class="tab-content">
+                    <div class="card-grid">
+                        <div class="stats-card text-card">
+                            <h2><i class="fa fa-bolt"></i>光伏装机发电量</h2>
+                            <div class="text-content">
+                                <p>
+                                    2024年，中国太阳能发电量达到1800亿千瓦时，同比增长约20%，成为仅次于水电的第二大清洁能源发电来源。
+                                </p>
+                                <p>
+                                    如今10亿千瓦以上的光伏装机一年可发出1.2万亿千瓦时的绿色清洁电能，可直接替代1.52亿吨的原油进口（约占2024年原油进口量的18%），助力中国向实现能源自主迈进，减少全球能源安全危机对我国的影响。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="stats-card chart-card">
+                            <div id="visualization4" class="chart-container">
+                                <iframe src="./part2-chart4.html" frameborder="0"
+                                    style="width:100%; height:100%;load:lazy;"></iframe>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 光伏利用率 -->
+                <div id="tab5" class="tab-content">
+                    <div class="card-grid">
+                        <div class="stats-card text-card">
+                            <h2><i class="fa fa-line-chart"></i>光伏利用率</h2>
+                            <div class="text-content">
+                                <p>
+                                    中国光伏发电量不断增加，在全部发电量中的占比稳步提高，同时，光伏发电利用率平均保持在95%以上，处于世界一流水平，真正做到让光伏发的电造福于民。
+                                </p>
+                                <p>
+                                    2024年，中国光伏利用率达到96.8%，其中上海、浙江、福建、重庆四个市的光伏利用率甚至高达100%。
+                                </p>
+                                <p>这样的增速与规模，充分彰显了中国在可再生能源领域持续发力的坚定决心，印证了其在推动全球绿色能源发展中的大国担当。</p>
+                            </div>
+                        </div>
+                        <div class="stats-card chart-card">
+                            <div id="visualization5" class="chart-container">
+                                <img src="./img/part2-char5.png" alt="光伏利用率图表" style="load:lazy;">
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 页脚 -->
+            <footer>
+                <div class="footer-content">
+                    <!-- 可以添加页脚内容 -->
+                </div>
+            </footer>
+        </div>
+        <!-- 过渡段 -->
+        <div class="transition-container"
+            style="height: 100vh; display: flex; align-items: center;justify-content: center; ">
+            <div class="transition-content"
+                style="font-size: 2rem; line-height: 150%; text-align: center; color: white; text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6);">
+                <p>中国光伏产业的蓬勃发展，其意义远不止于能源本身。</p>
+                <p>它深刻改变着普通民众的生活，创造着脱贫致富的新路径；</p>
+                <p>更是推动技术革新、引领绿色转型，创造了能耗大幅降低的产业奇迹；</p>
+                <p>并为全球应对气候变化贡献着珍贵的中国力量。</p>
+            </div>
+        </div>
+        <!-- 人物对话 -->
+        <div class="dialog-page-content">
+            <div class="dialog-container">
+                <!-- 标题区域 -->
+                <div class="dialog-title" style="margin:5vh auto ;font-size: 1rem;color: #fff;">
+                    点击人物头像查看光伏贡献
+                </div>
+
+                <!-- 主要内容区域 -->
+                <main class="dialog-main-content">
+                    <!-- 连接线条 -->
+                    <div class="dialog-connection-line" style="top: 260px; height: calc(100% - 520px);"></div>
+
+                    <!-- 村民金秀理 -->
+                    <div class="dialog-person-card" data-delay="0">
+                        <!-- 人物头像 -->
+                        <div class="dialog-person-avatar dialog-avatar-blue" data-target="dialog-detail-1">
+                            <img src="./img/part2-p1.png" alt="村民金秀理" style="width: 260px;
+            height: 260px;
+            border-radius: 50%;z-index: 1;">
+                            <!-- <i class="fas fa-user"></i> -->
+                        </div>
+
+                        <!-- 内容区域 -->
+                        <div class="dialog-card-content">
+                            <h2 class="dialog-person-name dialog-name-blue">金秀理 <span
+                                    class="dialog-person-title">河北省平山县三汲乡穆家庄村民</span></h2>
+
+                            <!-- 对话内容 -->
+                            <div class="dialog-dialogue dialog-dialogue-blue">
+                                <p>感觉咱们这个太阳能发电设备比固定式的发电量高，而且它是旋转的，不用扫土，不用扫雪，刮风下雨都不怕，这个设备的太阳能板使用一根铁柱支撑，安装到哪儿都不占空间，不影响咱们老百姓晒粮食，挺好的。
+                                </p>
+                            </div>
+
+                            <!-- 贡献详情 (默认隐藏) -->
+                            <div id="dialog-detail-1" class="dialog-detail-content dialog-detail-blue">
+                                <h3 class="dialog-detail-title">光伏脱贫贡献</h3>
+                                <p>光伏脱贫是实施精准脱贫的重要举措，是造福贫困地区、贫困群众的民生工程。光伏既能满足贫困地区的用电需求，更能为带来经济效益，使村民增收致富。同时，随着技术的不断进步，光伏产业对劳动力的需求增加，为贫困地区创造更多就业机会。
+                                </p>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 李振国 (中间人物，方向相反) -->
+                    <div class="dialog-person-card dialog-card-reversed" data-delay="200">
+                        <!-- 人物头像 -->
+                        <div class="dialog-person-avatar dialog-avatar-purple" data-target="dialog-detail-2">
+                            <img src="./img/part2-p2.png" alt="村民金秀理" style="width: 260px;
+                                        height: 260px;
+                                        border-radius: 50%;z-index: 1;">
+                            <!-- <i class="fas fa-industry"></i> -->
+                        </div>
+
+                        <!-- 内容区域 -->
+                        <div class="dialog-card-content">
+                            <h2 class="dialog-person-name dialog-name-purple">李振国 <span
+                                    class="dialog-person-title">光伏巨头隆基绿能创始人</span></h2>
+
+                            <!-- 对话内容 -->
+                            <div class="dialog-dialogue dialog-dialogue-purple">
+                                <p>十年前，生产一瓦组件需要消耗1.2度电；现如今依靠光伏，只需要0.4度电就可以完成。这是巨大的科技进步，也是超乎想象的能耗降幅。</p>
+                            </div>
+
+                            <!-- 贡献详情 (默认隐藏) -->
+                            <div id="dialog-detail-2" class="dialog-detail-content dialog-detail-purple">
+                                <h3 class="dialog-detail-title">环保与科技贡献</h3>
+                                <p>光伏发电通过半导体材料直接将太阳能转化为电能，全程无需燃烧化石燃料，彻底摆脱了传统能源的污染枷锁。数据显示，每千瓦光伏系统年均减少二氧化碳排放约1吨，相当于为地球增种50棵树木。
+                                </p>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 埃里克·索尔海姆 -->
+                    <div class="dialog-person-card" data-delay="400">
+                        <!-- 人物头像 -->
+                        <div class="dialog-person-avatar dialog-avatar-pink" data-target="dialog-detail-3">
+                            <img src="./img/part2-p3.png" alt="村民金秀理" style="width: 260px;
+                                                                    height: 260px;
+                                                                    border-radius: 50%;z-index: 1;">
+                            <!-- <i class="fas fa-globe-americas"></i> -->
+                        </div>
+
+                        <!-- 内容区域 -->
+                        <div class="dialog-card-content">
+                            <h2 class="dialog-person-name dialog-name-pink">埃里克·索尔海姆 <span
+                                    class="dialog-person-title">联合国前秘书长</span></h2>
+
+                            <!-- 对话内容 -->
+                            <div class="dialog-dialogue dialog-dialogue-pink">
+                                <p>中国光伏是中国给予全人类的重大礼物，将美好带给这个世界，没有哪个国家像中国，在这一发展中发挥了如此重要的作用，这是对世界的巨大贡献！</p>
+                            </div>
+
+                            <!-- 贡献详情 (默认隐藏) -->
+                            <div id="dialog-detail-3" class="dialog-detail-content dialog-detail-pink">
+                                <h3 class="dialog-detail-title">全球贡献</h3>
+                                <p>中国作为全球光伏产业的领军者，始终秉持"共商、共建、共享"的理念，通过"一带一路"倡议，将先进的光伏技术、成熟的产业经验以及可持续的能源解决方案带给沿线国家，助力他们实现能源转型与绿色发展。
+                                </p>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+
+            </div>
+        </div>
+
+        <div style="height: 30vh;display: flex;justify-content: center;align-items: center;">
+            <a href="./part3Dilemma.html" class="next-chapter-btn">下一章</a>
+        </div>
+    </div>
+
+
+
+
+
+    <script src="./js/part2-star-bg.js"></script>
+    <script src="./js/part2-game.js"></script>
+    <!-- 转场动画 -->
+    <script>
+        // 开头文字出现动画
+        // 滚动动画控制(文字+提示框)
+        function setupScrollAnimation() {
+            const text1 = document.getElementById('text1');
+            const text2 = document.getElementById('text2');
+            const container = document.querySelector('.text-animation-container');
+
+
+            let text1Shown = false;
+            let text2Shown = false;
+            let taskModalShown = false;
+
+            function checkScroll() {
+                const rect = container.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                const scrollPercent = window.scrollY / windowHeight;
+
+                // 当容器进入视口时
+                if (rect.top <= windowHeight * 0.8 && rect.bottom >= windowHeight * 0.2) {
+                    // 显示第一段文字
+                    if (!text1Shown && scrollPercent < 0.5) {
+                        text1.style.opacity = '1';
+                        text1.style.transform = 'translateY(0)';
+                        text1Shown = true;
+                    }
+
+                    // 当滚动超过50%时，第一段文字消失，第二段文字出现
+                    if (scrollPercent >= 0.7) {
+                        if (text1Shown) {
+                            text1.style.opacity = '0';
+                            text1.style.transform = 'translateY(-50px)';
+                        }
+
+                        if (!text2Shown) {
+                            text2.style.opacity = '1';
+                            text2.style.transform = 'translateY(0)';
+                            text2Shown = true;
+                        }
+                    }
+                }
+            }
+
+            window.addEventListener('scroll', checkScroll);
+            checkScroll(); // 初始检查
+        }
+
+        document.addEventListener('DOMContentLoaded', setupScrollAnimation);
+
+        //人物对话
+        // 粒子背景初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            // 进度条控制
+            // 获取相关元素
+            const reputationFill = document.querySelector('.reputation .status-fill');
+            const dialogPageContent = document.querySelector('.dialog-page-content');
+
+            // 初始宽度和目标宽度
+            const initialWidth = 70; // 初始宽度百分比
+            const targetWidth = 80;  // 目标宽度百分比
+            const widthRange = targetWidth - initialWidth; // 宽度变化范围
+
+            // 监听滚动事件
+            window.addEventListener('scroll', function () {
+                // 获取dialog-page-content元素的位置信息
+                const contentRect = dialogPageContent.getBoundingClientRect();
+                // 获取页面总高度和可视区域高度
+                const pageHeight = document.documentElement.scrollHeight;
+                const viewportHeight = window.innerHeight;
+
+                // 计算从dialog-page-content顶部到页面底部的可滚动距离
+                const contentTop = contentRect.top + window.scrollY;
+                const scrollableDistance = pageHeight - contentTop - viewportHeight / 2;
+
+                // 计算当前滚动位置与内容区域的相对位置
+                const currentScroll = window.scrollY;
+                const scrollPosition = Math.max(0, currentScroll - contentTop);
+
+                // 计算滚动百分比（0到1之间）
+                let scrollPercent = scrollPosition / scrollableDistance;
+                scrollPercent = Math.min(1, Math.max(0, scrollPercent)); // 限制在0-1之间
+
+                // 计算当前应该设置的宽度
+                const currentWidth = initialWidth + (scrollPercent * widthRange);
+
+                // 应用宽度
+                reputationFill.style.width = `${currentWidth}%`;
+            });
+
+            // 初始触发一次滚动事件以设置正确的初始状态
+            window.dispatchEvent(new Event('scroll'));
+
+
+
+
+
+
+            // 头像点击交互
+            const avatars = document.querySelectorAll('.dialog-person-avatar');
+            avatars.forEach(avatar => {
+                avatar.addEventListener('click', function () {
+                    const targetId = this.getAttribute('data-target');
+                    const targetElement = document.getElementById(targetId);
+
+                    // 切换显示/隐藏状态
+                    if (!targetElement.classList.contains('visible')) {
+                        targetElement.classList.add('visible');
+                        this.classList.add('dialog-avatar-pulse');
+
+                        // 关闭其他详情
+                        document.querySelectorAll('.dialog-detail-content').forEach(detail => {
+                            if (detail.id !== targetId && detail.classList.contains('visible')) {
+                                detail.classList.remove('visible');
+                                const otherAvatar = document.querySelector(`[data-target="${detail.id}"]`);
+                                otherAvatar.classList.remove('dialog-avatar-pulse');
+                            }
+                        });
+                    } else {
+                        targetElement.classList.remove('visible');
+                        this.classList.remove('dialog-avatar-pulse');
+                    }
+                });
+            });
+
+            // 滚动显示动画
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const delay = entry.target.getAttribute('data-delay') || 0;
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, delay);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.dialog-person-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // 滚动视差效果
+            window.addEventListener('scroll', function () {
+                const scrollY = window.scrollY;
+
+                // 网格背景视差
+                const gridBg = document.querySelector('.dialog-grid-bg');
+                gridBg.style.backgroundPositionY = scrollY * 0.1 + 'px';
+                gridBg.style.backgroundPositionX = scrollY * 0.05 + 'px';
+
+                // 人物卡片视差
+                document.querySelectorAll('.dialog-person-card').forEach((card, index) => {
+                    if (card.classList.contains('visible')) {
+                        const speed = 0.05;
+                        const yPos = -(scrollY - card.offsetTop + window.innerHeight / 2) * speed;
+                        card.style.transform = `translateY(${yPos}px)`;
+                    }
+                });
+            });
+        });
+
+
+        // 翻页
+        const loading = {
+            container: document.querySelector(".loading"),
+            in(target) {
+                this.container.classList.remove("loading_out");
+                setTimeout(() => {
+                    window.location.href = target;
+                }, 1000)
+            },
+            out() {
+                this.container.classList.add("loading_out");
+            }
+        };
+
+        // 页面加载完成后隐藏loading动画
+        window.addEventListener("load", () => {
+            loading.out();
+
+        });
+
+        // 滚动方向检测
+        // let lastScrollTop = 0;
+        // let isScrollingDown = false;
+
+        // window.addEventListener('scroll', function () {
+        //     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // 判断滚动方向
+        // if (scrollTop > lastScrollTop) {
+        //     isScrollingDown = true; // 向下滚动
+        // } else {
+        //     isScrollingDown = false; // 向上滚动
+        // }
+        // lastScrollTop = scrollTop;
+
+        // 检查是否滚动到底部（向下滚动时）
+        // if (isScrollingDown && (window.innerHeight + scrollTop) >= document.body.offsetHeight - 50) {
+        //     loading.in('./part3Dilemma.html');
+        // }
+
+        // 检查是否滚动到顶部（向上滚动时）
+        // if (!isScrollingDown && scrollTop <= 50) {
+        //     loading.in('./part1Embarkation.html');
+        // }
+        // });
+
+
+
+
+        // 星星
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            const starCount = 150; // 星星数量（可根据性能调整）
+
+            // 清空现有星星（防止重复生成）
+            container.innerHTML = '';
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+
+                // 随机属性
+                const size = Math.random() * 3 + 1; // 1-4px
+                const posX = Math.random() * 100;  // 0-100vw
+                const posY = Math.random() * 100;  // 0-100vh
+                const delay = Math.random() * 5;   // 0-5s
+                const duration = 2 + Math.random() * 3; // 2-5s
+
+                // 应用样式
+                star.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${posX}vw;
+                    top: ${posY}vh;
+                    animation-delay: ${delay}s;
+                    animation-duration: ${duration}s;
+                `;
+
+                // 20%几率生成彩色星星
+                if (Math.random() > 0.8) {
+                    const colors = ['#67E7D0', '#603BBD', '#00ff9d'];
+                    const color = colors[Math.floor(Math.random() * 3)];
+                    star.style.background = color;
+                    star.style.boxShadow = `0 0 15px 3px ${color}`;
+                }
+
+                container.appendChild(star);
+            }
+        }
+
+        // 页面加载时生成星星
+        window.addEventListener('load', createStars);
+
+        // 视窗大小变化时重新生成（保持全屏效果）
+        window.addEventListener('resize', createStars);
+    </script>
+</body>
+
+</html>

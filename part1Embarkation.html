@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>启程
+
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- 导入赛博朋克风格字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- 引入固定格式和引入的格式 -->
+    <link rel="stylesheet" href="./css/part1_fix_and_intro.css">
+    <!-- 转折和里程碑+时间轴 -->
+    <link rel="stylesheet" href="./css/part1_other.css">
+    <!-- 横向滚动-->
+    <link rel="stylesheet" href="./css/PART1-scroll.css">
+    <style>
+        /* 这是一个过渡句的样式 */
+        .transition-text {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00eeff;
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.8),
+                0 0 20px rgba(0, 247, 255, 0.6);
+            /* animation: pulseGlow 1.5s infinite; */
+        }
+
+        /* 这是一个没招了的转场按钮 */
+        /* 按钮样式 */
+        .next-chapter-btn {
+            display: inline-block;
+            width: 100px;
+            height: 50px;
+            border-radius: 10%;
+            background-color: #2b9797c5;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            text-decoration: none;
+            font-family: sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        /* 悬停效果 */
+        .next-chapter-btn:hover {
+            background-color: #2b9797;
+            transform: scale(1.05);
+        }
+
+        /* 过渡动画 */
+        .loading {
+            position: fixed;
+            flex-direction: column;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #f7f7f7;
+            z-index: 100000000;
+            transition: 1s ease;
+        }
+
+        .loading_out {
+            transform: translateY(100%);
+        }
+
+        .loading_out svg,
+        .loading_out p {
+            opacity: 0;
+        }
+
+
+
+
+
+
+
+        .side-nav-item a:hover span {
+            color: #00ff9d;
+        }
+
+        .intro-pic:hover {
+            transform: scale(1.05);
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 10px rgba(1, 1, 115, 0.7),
+                    0 0 20px rgba(1, 1, 115, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 20px rgba(1, 1, 115, 0.9),
+                    0 0 30px rgba(1, 1, 115, 0.7),
+                    0 0 40px rgba(1, 1, 115, 0.5);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 顶部生存条 -->
+    <div class="status-bar">
+        <!-- 头像 -->
+        <div class="player-avatar">
+            <img src="./img/part1-intro.png" alt="赛博朋克风格的游戏角色头像" class="avatar-image">
+        </div>
+
+        <!-- 生存条 -->
+        <div class="status-bars">
+            <div class="status-item health">
+                <span class="status-label">生命</span>
+                <div class="status-bar-container">
+                    <div class="status-fill"></div>
+                </div>
+            </div>
+
+            <div class="status-item energy">
+                <span class="status-label">能量</span>
+                <div class="status-bar-container">
+                    <div class="status-fill"></div>
+                </div>
+            </div>
+
+            <div class="status-item reputation">
+                <span class="status-label">声望</span>
+                <div class="status-bar-container">
+                    <div class="status-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增的两头粗中间细的线图案 -->
+        <div class="cyber-line">
+            <div class="cyber-line-inner"></div>
+        </div>
+    </div>
+
+    <!-- 左侧导航栏 -->
+    <div class="side-nav">
+        <div class="side-nav-item active" data-nav="启航">
+            <span>启航</span>
+        </div>
+        <div class="side-nav-item" data-nav="曙光">
+            <span><a href="part2Dawn.html" style=" text-decoration: none;color: #ffffff;">曙光</a></span>
+        </div>
+        <div class="side-nav-item" data-nav="困境">
+            <span><a href="part3Dilemma.html" style=" text-decoration: none;color: #ffffff;">困境</a></span>
+        </div>
+        <div class="side-nav-item" data-nav="突围">
+            <span><a href="part4Breakthrough.html" style=" text-decoration: none;color: #ffffff;">突围</a></span>
+        </div>
+        <div class="bottom-line"></div> <!-- 竖线底部加粗 -->
+    </div>
+    <!-- 底部滚动提示 -->
+    <div class="scroll-indicator">
+        <div class="scroll-text">向下滑动</div>
+        <div class="scroll-arrow"></div>
+    </div>
+    <!-- 扫描线和故障效果覆盖层 -->
+    <div class="overlay scanline glitch-overlay"></div>
+    <!-- 加载页 -->
+    <div class="loading">
+    </div>
+    <!-- 主容器 - 屏幕高度设置 -->
+    <div id="main-container" class="noise-bg">
+        <!-- 背景网格 -->
+        <div class="grid-bg"></div>
+
+        <!-- 开头的头图 -->
+        <div class="head">
+            <img src="./img/1.png" alt="启程" style=" width: 100vw;
+    height: auto;">
+        </div>
+        <!-- 总体的引入 -->
+        <div class="intro" style="display: flex;
+            flex-direction: column;
+            align-items: center; /* 水平居中（因flex-direction为column，交叉轴是水平方向） */
+            justify-content: center; /* 垂直居中（主轴是垂直方向） */
+            text-align: center;
+            height: 100vh;
+            margin: 0; /* 移除默认margin，避免出现滚动条 */">
+            <p class="operation-title">
+                探索者[光晟]
+            </p>
+            <p class="operation-period">
+                点击追溯：光伏传奇的第一篇章！
+            </p>
+            <a href="#dawn-operation" style="z-index:100 ;transition: all 0.3s ease;"><img src="./img/part1-intro.png"
+                    alt="光晟头像" class="intro-pic"
+                    style="margin-top: 5vh;border-radius: 5%;width: 30vw;  transition: all 0.3s ease; "></a>
+        </div>
+        <!-- 第一部分 曙光行动 -->
+        <!-- 1.1异形科技线框 -->
+        <div id="dawn-operation">
+            <div class="bg-dialog">
+                <img src="./img/bg-dialog.png" alt="对话框">
+                <div class="tech-frame">
+
+
+                    <h2 class="operation-title">启航行动</h2>
+                    <div class="operation-period">20世纪70年代—2004年</div>
+                </div>
+            </div>
+        </div>
+        <!-- 1.2引言1 -->
+        <div id="quote">
+            <div class="quote-container">
+                <div class="quote-decoration quote-top"></div>
+                <p class="quote-text">当第一块光伏板在废墟中亮起，我们重新看到了文明的火种。</p>
+                <!-- <div class="quote-bg"></div> -->
+                <div class="quote-decoration quote-bottom"></div>
+            </div>
+        </div>
+        <!-- 1.3动画1 -->
+        <div id="vedio-animate" class="responsive-video" style="position: relative;width: 100%;">
+            <video class="responsive-video" id="mainVideo" src="part1-1.mp4"
+                style="width: 100%; height: 100vh; object-fit: cover;" controls></video>
+            <div class="kunjing" id="kunjing" style="position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: #003a5457;
+                z-index: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center; /* 水平居中 */
+                justify-content: center; /* 垂直居中 */
+                text-align: center;
+               ">
+
+                <h2 class="operation-title">困境</h2>
+                <div class="operation-period">垄断压制</div>
+                <button id="playButton" style="padding: 12px 30px; margin-top: 3vh;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #003a54;
+            background-color: rgba(255, 255, 255, 0.582);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">点击观看动画</button>
+            </div>
+
+        </div>
+        <!-- 1.4转机 -->
+        <div class="sec1 1">
+            <!-- 左侧图片和按钮区域 -->
+            <div class="left-image-container" style="display: flex;flex-direction: column;">
+                <img src="./img/qiji.png" alt="契机" style="width: 70%;height: auto;">
+                <img src="./img/box.png" alt="盒子图片" class="main-image" id="mainImage">
+
+                <!-- 交互按钮 -->
+                <button class="action-button" id="actionButton">
+                    点击领取国家支持
+                </button>
+
+                <!-- 点击后显示的文本 -->
+                <div class="info-text" id="infoText">
+                    1998年，中国签署了《京都议定书》，同年中国政府开始关注光伏发电技术的市场化应用。光晟等人的[逐光行动]终于迎来新的转机。
+                </div>
+            </div>
+
+            <!-- 右侧内容区域 -->
+            <div class="right-content">
+                <div class="year-number">1998</div>
+                <img src="./img/part1-gs1.png" alt="右侧初始图片" class="right-image" id="rightImage">
+            </div>
+        </div>
+        <!-- 1.5里程碑1 -->
+        <div class="sec1 2">
+            <!-- 左侧图片和按钮区域 -->
+            <div class="left-image-container" style="
+                    width: 40%; 
+                    display: flex;
+                    flex-direction: column;
+                    gap: 2rem;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 1rem;
+                    box-sizing: border-box; /* 关键：确保padding不增加总宽度 */
+                     /*border: 1px solid #ccc; 调试用：可看到容器边界，完成后可删除 */
+                ">
+                <div class="info-text" id="infoText" style="
+                        opacity: 1;
+                        max-width: 100%; /* 限制最大宽度为父容器宽度 */
+                        width: 100%; /* 与父容器同宽 */
+                        font-size: 2rem;
+                        display: block;
+                        height: auto;
+                        box-sizing: border-box; /* 包含内边距在宽度内 */
+                        word-break: break-word; /* 文本自动换行 */
+                        padding: 0 1rem; /* 内部留白，避免内容贴边 */
+                    ">
+                    <!-- 图片设置相对父容器的宽度，并居中显示 -->
+                    <img src="./img/lichengbei.png" alt="里程碑" id="mainImage" style="
+                            width: 100%; /* 关键：相对于父容器(infoText)的宽度 */
+                            max-width: 600px; /* 可选：限制图片最大宽度 */
+                            height: auto;
+                            display: block;
+                            object-fit: cover;
+                            margin: 0 auto 6vh; /* 居中图片，底部留白 */
+                        ">
+                    20世纪90年代中期，<br>随着国际光伏市场的崛起，<br>中国光伏产业开始逐渐崭露头角，<br>光伏产品在一些无电地区和特殊领域得到应用。<br><br>1992年，国家启动了“光明工程”，<br>旨在通过光伏技术解决偏远地区的用电问题。
+                </div>
+            </div>
+
+            <!-- 右侧内容区域 -->
+            <div class="right-content" style="width: 40%;right: 7vw;">
+
+
+                <div class="year-number" style="font-size: 7rem;margin-bottom: 5vh;line-height:8rem;">mid-1990s</div>
+                <img src="./img/part1-2.png" alt="右侧初始图片" class="right-image" style="max-height: 70vh;
+            max-width: 100%;">
+            </div>
+        </div>
+
+        <!-- 第二部分 逆光突围 -->
+        <!-- 2.1线框 -->
+        <div id="dawn-operation">
+            <div class="bg-dialog">
+                <img src="./img/bg-dialog.png" alt="对话框">
+                <div class="tech-frame">
+
+
+                    <h2 class="operation-title">逆光突围</h2>
+                    <div class="operation-period">2004年—2008年</div>
+                </div>
+            </div>
+        </div>
+        <!-- 2.2引言2 -->
+        <div id="quote">
+            <div class="quote-container">
+                <div class="quote-decoration quote-top" style="background-color: rgb(21, 255, 0);"></div>
+                <p class="quote-text"
+                    style="color: #970202;text-shadow: 0 0 10px  rgba(228, 1, 1, 0.678);animation: none;">
+                    紧急通告：<br>欧美国家大幅下调光伏补贴，但这不是寒冬，是中国光伏生存进化的契机。</p>
+                <div class="quote-decoration quote-bottom" style="background-color: rgb(21, 255, 0);"></div>
+            </div>
+        </div>
+
+        <!-- 2.4转机1 -->
+        <div class="sec1 3">
+            <!-- 左侧图片和按钮区域 -->
+            <div class="left-image-container" style="display: flex;flex-direction: column;align-items: center;">
+                <img src="./img/qiji2.png" alt="契机" style="width: 70%;height: auto;">
+                <div class="info-text" id="infoText" style="opacity: 1; max-width: 1000px; font-size: 2em;">
+                    2004年，欧洲开始加大光伏补贴，<br>全球光伏市场规模陡增，<br>中国光伏也凭借产业爆发的东风，<br>实现第一轮大扩军。
+                </div>
+                <!-- <img src="" alt="我是主角和品牌的合照" style="height: 80vh;"> -->
+
+            </div>
+
+            <!-- 右侧内容区域 -->
+            <div class="right-content" style="width: 40%;right: 7vw;">
+
+
+                <div class="year-number">2004</div>
+                <img src="./img/part1-3.png" alt="右侧初始图片" class="right-image" style="max-height: 100vh;
+                        max-width: 100%; scale: 1.15;">
+            </div>
+        </div>
+        <!-- 2.5转机2 -->
+        <div class="sec1 4">
+            <!-- 左侧图片和按钮区域 -->
+            <div class="left-image-container" style="width: 40%;">
+                <div class="info-text" id="infoText" style="opacity: 1; max-width: 1000px; font-size: 2rem;">
+                    2006年，国家颁布了<br>《中华人民共和国可再生能源法》，<br>中国光伏产业发展进入快车道。<br><span
+                        style="color: #fcff61;text-shadow:0 0 15px  #fcff61;">[逐光行动]迎来新的蓬勃发展期间。</span>
+                </div>
+                <img src="./img/part1-2-run.png" alt="主角向前跑" style="height: 80vh;">
+            </div>
+
+            <!-- 右侧内容区域 -->
+            <div class="right-content" style="width: 40%;right: 7vw;">
+
+
+                <div class="year-number">2006</div>
+                <img src="./img/part1-4.png" alt="右侧初始图片" class="right-image" style="max-height: 100vh;
+                            max-width: 100%; scale: 1.2;">
+            </div>
+        </div>
+        <!-- 2.6里程碑 -->
+        <div class="sec1 5">
+            <!-- 左侧图片和按钮区域 -->
+            <div class="left-image-container"
+                style="width: 40%; display:flex;flex-direction: column;align-items: center;top: 0;">
+
+                <div class="info-text" id="infoText" style="opacity: 1; max-width: 1000px; font-size: 2rem;">
+                    <img src="./img/lichengbei.png" alt="里程碑" style="width: 80%;height: auto;">
+                    <br>2007年，<br>中国太阳能电池产量达到1088MW，<br>占世界总产量的27.2%，<br>成为世界太阳电池的第一大生产国。
+                </div>
+
+            </div>
+
+            <!-- 右侧内容区域 -->
+            <div class="right-content" style="width: 40%;right: 7vw;">
+
+
+                <div class="year-number">2007</div>
+                <img src="./img/part1-5.png" alt="右侧初始图片" class="right-image" style="max-height: 100vh;
+                            max-width: 100%; scale: 1.2;">
+            </div>
+        </div>
+        <!-- 2.7动画+困境 -->
+        <div id="vedio-animate" class="responsive-video" style="position: relative;width: 100%;">
+            <video class="responsive-video" id="mainVideo2" src="part1-2.mp4"
+                style="width: 100%; height: 100vh; object-fit: cover;" controls></video>
+            <div class="kunjing" id="kunjing2" style="position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background-color: #003a5457;
+                z-index: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center; /* 水平居中 */
+                justify-content: center; /* 垂直居中 */
+                text-align: center;
+               ">
+
+                <h2 class="operation-title" style="font-size: 6rem;">困境</h2>
+                <div class="operation-period" style="font-size: 3rem;">受制于外</div>
+                <button id="playButton2" style="padding: 12px 30px; margin-top: 3vh;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #003a54;
+            background-color: rgba(255, 255, 255, 0.582);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);">点击观看动画</button>
+            </div>
+        </div>
+        <!-- 第三部分 逆光突围 -->
+        <!-- 3.1线框 -->
+        <div id="dawn-operation">
+            <div class="bg-dialog">
+                <img src="./img/bg-dialog.png" alt="对话框">
+                <div class="tech-frame">
+
+
+                    <h2 class="operation-title">领航宣言</h2>
+                    <div class="operation-period">2009年—2017年</div>
+                </div>
+            </div>
+        </div>
+        <!-- 3.2引言3 -->
+        <div id="quote">
+            <div class="quote-container" style="display: flex; flex-direction: column; align-items: center;">
+                <div class="quote-decoration quote-top"></div>
+
+                <p class="quote-text">“中国光伏打破技术锁链，开启新的能源纪元。”</p>
+                <img src="./img/qiji3.png" alt="契机3" style="width: 40%;height: auto; margin: 1rem 0;">
+                <div class="quote-decoration quote-bottom"></div>
+            </div>
+        </div>
+
+        <!-- 3.4时间轴 -->
+        <div class="glow-dots" id="glow-dots"></div>
+        <div class="main">
+            <div class="nav-btn" id="up-btn" onclick="slideToPrev()">↑</div>
+            <div class="nav-btn" id="down-btn" onclick="slideToNext()">↓</div>
+
+            <div id="content">
+                <!-- 2009年 -->
+                <div class="card">
+                    <div class="card-time">
+                        2009
+                    </div>
+                    <div class="card-title" style="font-size: 2.3rem;">
+                        金太阳工程与光伏建筑应用示范
+                    </div>
+                    <div class="card-passage">
+                        <br>
+                        中国开展"金太阳工程"和"光伏建筑应用示范"项目，成为中国光伏战略反攻、开拓国内市场的肇始。
+                        <!-- <img src="./img/part1-tl1.png" alt="图表" style="width: 100%;height: auto; "> -->
+
+                    </div>
+                </div>
+
+                <!-- 2011年 -->
+                <div class="card">
+                    <div class="card-time">
+                        2011
+                    </div>
+                    <div class="card-title">
+                        光伏发电上网电价政策
+                    </div>
+                    <div class="card-passage">
+                        <br>
+                        中国发改委发布《关于完善太阳能光伏发电上网电价政策的通知》，开启中国光伏电量补贴时代。
+
+                    </div>
+                </div>
+
+                <!-- 2012年 -->
+                <div class="card">
+                    <div class="card-time">
+                        2012
+                    </div>
+                    <div class="card-title">
+                        "光伏国六条"出台
+                    </div>
+                    <div class="card-passage">
+                        <br>
+                        中国出台"光伏国六条"措施直指困扰光伏行业的发电量收购等问题，通过补贴真正助力光伏企业的健康发展。
+
+                    </div>
+                </div>
+
+                <!-- 2015年 - 里程碑 -->
+                <div class="card milestone">
+                    <div class="card-time">
+                        里程碑
+                        2015
+                    </div>
+                    <div class="card-title">
+                        全球光伏制造霸主
+                    </div>
+                    <div class="card-passage">
+                        <br>
+                        中国生产了全球总量47.8%的多晶硅、全球79.8%的硅片、全球66%的太阳能电池片，全面掌握核心技术并实现领先。
+
+                    </div>
+                </div>
+
+                <!-- 2017年底 - 里程碑 -->
+                <div class="card milestone">
+                    <div class="card-time">
+                        2017
+                    </div>
+                    <div class="card-title">
+                        装机容量全球第一
+                    </div>
+                    <div class="card-passage">
+                        <br>
+                        中国光伏发电装机容量达1.3亿千瓦，同比增长68.7%，连续3年位居全球首位。
+
+                    </div>
+                </div>
+
+                <!-- 2017年 - 里程碑 -->
+                <div class="card milestone">
+                    <div class="card-time">
+                        2017
+                    </div>
+                    <div class="card-title">
+                        全球市场份额70%
+                    </div>
+                    <div class="card-passage">
+                        <br>
+                        中国光伏产业占据了全球70%以上的份额，规模、产能位居全球第一。
+                        <img src="./img/part1-tl2.gif" alt="图表" style="width: 100%;height: auto; ">
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="clock">
+                <div id="clock-table"></div>
+            </div>
+        </div>
+        <!-- 3.4.5过渡语句 -->
+        <div class="transition"
+            style="height: 100vh;display: flex;flex-direction: column;align-items: center;justify-content: center; ">
+
+            <p class="transition-text">研发达成！</p>
+            <p class="transition-text">探索者光晟，你已解锁
+                <a href="#scroll-container"
+                    style="color: #f4ff57;text-shadow:0 0 15px #f4ff57;cursor: pointer;position: relative;">[光伏新属性卡]</a>，开启新的技术纪元！
+            </p>
+
+        </div>
+        <!-- 3.5横向滚动卡片 -->
+        <div class="vertical-center" id="scroll-container">
+            <div class="scroll">
+                <!-- 滚动容器 -->
+                <div class="scroll-container" id="scrollContainer">
+                    <div class="card-track">
+                        <!-- 第一张卡片：经济实惠 -->
+                        <div class="card-scroll economy">
+                            <div class="pixel-decoration pixel-tl"></div>
+                            <div class="pixel-decoration pixel-tr"></div>
+                            <div class="pixel-decoration pixel-bl"></div>
+                            <div class="pixel-decoration pixel-br"></div>
+
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fa fa-money"></i>
+                                </div>
+                                <h3 class="card-title">经济实惠</h3>
+                            </div>
+                            <div class="card-content">
+                                <span
+                                    class="number-highlight">光伏发电能为用户带来显著的经济效益。</span>对于普通家庭，既能满足自家的日常用电需求，又能将多余的电量卖给电网，增加收入。对于企业，可节省大量电费成本。
+                            </div>
+                        </div>
+
+                        <!-- 第二张卡片：可利用量巨大 -->
+                        <div class="card-scroll abundance">
+                            <div class="pixel-decoration pixel-tl"></div>
+                            <div class="pixel-decoration pixel-tr"></div>
+                            <div class="pixel-decoration pixel-bl"></div>
+                            <div class="pixel-decoration pixel-br"></div>
+
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fa fa-sun-o"></i>
+                                </div>
+                                <h3 class="card-title">可利用量巨大</h3>
+                            </div>
+                            <div class="card-content">
+                                是目前世界主要能源探明储量的<span class="number-highlight">一万倍</span>，一年内到达地球表面的太阳能总量折合标准煤共约<span
+                                    class="number-highlight">1.892x1013千亿吨</span>。太阳的寿命至少尚有<span
+                                    class="number-highlight">40亿年</span>，太阳能可源源不断供给地球的时间可以说是近似无限的。
+                            </div>
+                        </div>
+
+                        <!-- 第三张卡片：转换率高 -->
+                        <div class="card-scroll efficiency">
+                            <div class="pixel-decoration pixel-tl"></div>
+                            <div class="pixel-decoration pixel-tr"></div>
+                            <div class="pixel-decoration pixel-bl"></div>
+                            <div class="pixel-decoration pixel-br"></div>
+
+                            <div class="card-header">
+                                <div class="card-icon">
+                                    <i class="fa fa-bolt"></i>
+                                </div>
+                                <h3 class="card-title">转换率高</h3>
+                            </div>
+                            <div class="card-content">
+                                太阳能光伏发电直接将太阳辐射能转换为电能。在所有可再生能源利用中，太阳能光伏发电的<span
+                                    class="number-highlight">转换环节最少、利用最直接</span>。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 兜底的 -->
+
+                <div class="scroll-hint">
+                    SCROLL <i class="fa fa-mouse-pointer"></i> TO NAVIGATE
+                </div>
+            </div>
+        </div>
+        <div style="height: 30vh;display: flex;justify-content: center;align-items: center;">
+            <a href="./part2Dawn.html" class="next-chapter-btn">下一章</a>
+        </div>
+    </div>
+    <!-- 时间轴\按钮切换\横向滑动卡片,分开的,好用 -->
+    <script>
+        // 进度条变换
+        // 在现有的script标签内添加以下代码
+
+        // 获取状态条元素
+        const healthFill = document.querySelector('.health .status-fill');
+        const energyFill = document.querySelector('.energy .status-fill');
+        const reputationFill = document.querySelector('.reputation .status-fill');
+
+        // 获取视频区域元素
+        const videoSections = document.querySelectorAll('.responsive-video');
+
+        // 计算各元素位置信息
+        function getElementPosition(element) {
+            const rect = element.getBoundingClientRect();
+            return {
+                top: rect.top + window.pageYOffset,
+                bottom: rect.bottom + window.pageYOffset,
+                height: rect.height
+            };
+        }
+
+        // 计算状态条宽度
+        function calculateStatusWidth(scrollProgress, inVideoArea) {
+            // 基础宽度（0-70%）
+            let baseWidth = 70 * scrollProgress;
+
+            // 如果在视频区域，临时降低宽度，但不低于10%
+            if (inVideoArea) {
+                baseWidth = Math.max(10, baseWidth * 0.4);
+            }
+
+            return Math.min(70, baseWidth);
+        }
+
+        // 处理滚动事件
+        function handleScroll() {
+            // 获取页面滚动信息
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const windowHeight = window.innerHeight;
+            const documentHeight = Math.max(
+                document.body.scrollHeight,
+                document.body.offsetHeight,
+                document.documentElement.clientHeight,
+                document.documentElement.scrollHeight,
+                document.documentElement.offsetHeight
+            );
+
+            // 计算滚动进度（0到1之间）
+            const scrollProgress = Math.min(1, scrollTop / (documentHeight - windowHeight));
+
+            // 检查是否在视频区域
+            let inVideoArea = false;
+            videoSections.forEach(section => {
+                const pos = getElementPosition(section);
+                // 检查当前视图是否与视频区域重叠
+                if (scrollTop < pos.bottom && scrollTop + windowHeight > pos.top) {
+                    inVideoArea = true;
+                }
+            });
+
+            // 计算并设置状态条宽度
+            const width = calculateStatusWidth(scrollProgress, inVideoArea);
+            healthFill.style.width = `${width}%`;
+            energyFill.style.width = `${width}%`;
+            reputationFill.style.width = `${width}%`;
+        }
+
+        // 初始化状态条宽度为0
+        healthFill.style.width = '0%';
+        energyFill.style.width = '0%';
+        reputationFill.style.width = '0%';
+
+        // 监听滚动事件
+        window.addEventListener('scroll', handleScroll);
+
+        // 初始加载时触发一次
+        handleScroll();
+
+
+
+
+
+
+
+        // 页面切换
+        const loading = {
+            container: document.querySelector(".loading"),
+            in(target) {
+                this.container.classList.remove("loading_out");
+                setTimeout(() => {
+                    window.location.href = target;
+                }, 1000)
+            },
+            out() {
+                this.container.classList.add("loading_out");
+            }
+        };
+
+        // 页面加载完成后隐藏loading动画
+        window.addEventListener("load", () => {
+            loading.out();
+
+        });
+
+        // 滚动方向检测
+        let lastScrollTop = 0;
+        let isScrollingDown = false;
+
+        window.addEventListener('scroll', function () {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // 判断滚动方向
+            if (scrollTop > lastScrollTop) {
+                isScrollingDown = true; // 向下滚动
+            } else {
+                isScrollingDown = false; // 向上滚动
+            }
+            lastScrollTop = scrollTop;
+
+            // 检查是否滚动到底部（向下滚动时）
+            // if (isScrollingDown && (window.innerHeight + scrollTop) >= document.body.offsetHeight - 50) {
+            //     loading.in('./part2Dawn.html');
+            // }
+
+            // 检查是否滚动到顶部（向上滚动时）
+            // if (!isScrollingDown && scrollTop <= 50) {
+            //     loading.in('./index.html');
+            // }
+        });
+
+
+        // 时间轴
+        // 定义变量
+        let offset = 0;
+        let maxOffset = 0;
+        let minOffset = -5; // 因为有6张卡片，所以最小偏移量是-5
+
+        // 获取所有卡片元素并存储在数组中
+        const slides = Array.from(document.querySelectorAll(".card"));
+
+        // 获取时钟表盘元素
+        const clock = document.querySelector("#clock-table");
+
+        // 定义具体的年份和对应的角度
+        const years = [
+            { year: 2009, angle: 0 },
+            { year: 2011, angle: 60 },
+            { year: 2012, angle: 90 },
+            { year: 2015, angle: 180 },
+            { year: 2017, angle: 270 },
+            { year: 2017, angle: 300 } // 第二个2017年放在稍后位置
+        ];
+
+        // 创建时钟刻度 - 只创建指定的年份刻度
+        years.forEach(item => {
+            addThickClockScale(item.angle, item.year);
+
+            // 在主要刻度之间添加一些小的刻度
+            const nextIndex = years.findIndex(y => y.angle > item.angle);
+            if (nextIndex !== -1) {
+                const nextItem = years[nextIndex];
+                const diff = nextItem.angle - item.angle;
+                const steps = Math.floor(diff / 10);
+
+                for (let i = 1; i < steps; i++) {
+                    const angle = item.angle + (diff / steps) * i;
+                    addClockScale(angle);
+                }
+            }
+        });
+
+        // 添加随机闪烁的光点
+        const glowDots = document.getElementById('glow-dots');
+        for (let i = 0; i < 30; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'glow-dot';
+            dot.style.left = `${Math.random() * 100}%`;
+            dot.style.top = `${Math.random() * 100}%`;
+            dot.style.animationDelay = `${Math.random() * 3}s`;
+            glowDots.appendChild(dot);
+        }
+
+        // 添加时钟刻度
+        function addClockScale(degree) {
+            const invisibleClockTable = document.createElement("div");
+            invisibleClockTable.className = "invisible-table";
+            invisibleClockTable.style.transform = `rotate(${degree}deg)`;
+
+            const clockScale = document.createElement("div");
+            clockScale.className = "clock-scale";
+
+            invisibleClockTable.appendChild(clockScale);
+            clock.appendChild(invisibleClockTable);
+        }
+
+        // 添加粗刻度
+        function addThickClockScale(degree, time) {
+            const invisibleClockTable = document.createElement("div");
+            invisibleClockTable.className = "invisible-table";
+            invisibleClockTable.style.transform = `rotate(${degree}deg)`;
+
+            const thickClockScale = document.createElement("div");
+            thickClockScale.className = "clock-thick";
+
+            const scaleContent = document.createElement("span");
+            scaleContent.textContent = `${time}`;
+
+            thickClockScale.appendChild(scaleContent);
+            invisibleClockTable.appendChild(thickClockScale);
+            clock.appendChild(invisibleClockTable);
+        }
+
+        // 向前切换卡片
+        function slideToPrev() {
+            offset = Math.min(maxOffset, offset + 1);
+            updateSlides();
+        }
+
+        // 向后切换卡片
+        function slideToNext() {
+            offset = Math.max(minOffset, offset - 1);
+            updateSlides();
+        }
+
+        // 更新幻灯片位置和时钟旋转
+        function updateSlides() {
+            slides.forEach(slide => {
+                slide.style.transform = `translateY(${offset * 100}%)`;
+            });
+
+            // 根据当前偏移量获取对应的角度
+            const currentAngle = years[Math.abs(offset)].angle;
+            clockRotate(currentAngle);
+
+            // 添加点击动画效果
+            const activeCard = slides[Math.abs(offset)];
+            activeCard.style.animation = 'none';
+            void activeCard.offsetWidth; // 触发重绘
+            activeCard.style.animation = 'card-pulse 0.5s';
+        }
+
+        // 旋转时钟表盘
+        function clockRotate(degree) {
+            clock.style.transform = `rotate(${-degree}deg)`; // 负值使旋转方向与卡片滑动方向一致
+        }
+
+        // 添加键盘控制
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+                slideToPrev();
+            } else if (e.key === 'ArrowDown') {
+                slideToNext();
+            }
+        });
+
+        // 添加触摸滑动支持
+        let touchStartY = 0;
+        let touchEndY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.changedTouches[0].screenY;
+        }, false);
+
+        document.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            if (touchStartY - touchEndY > 50) {
+                // 向上滑动
+                slideToNext();
+            } else if (touchEndY - touchStartY > 50) {
+                // 向下滑动
+                slideToPrev();
+            }
+        }
+
+
+
+        // 按钮切换
+        // 获取DOM元素
+        const sec1 = document.querySelector('.sec1');
+        const actionButton = document.getElementById('actionButton');
+        const mainImage = document.getElementById('mainImage');
+        const rightImage = document.getElementById('rightImage');
+        const infoText = document.getElementById('infoText');
+
+        // 初始状态标记
+        let isActive = false;
+
+        // 按钮点击事件
+        actionButton.addEventListener('click', function () {
+            if (!isActive) {
+                // 切换到激活状态
+                sec1.classList.add('section-active');
+
+                // 切换图片
+                setTimeout(() => {
+                    mainImage.src = './img/part1-book.png';
+                    mainImage.alt = '书籍图片';
+                    rightImage.src = './img/part1-gs2.png';
+                    rightImage.alt = '右侧切换后图片';
+                }, 400); // 延迟切换图片，配合动画效果
+
+                isActive = true;
+            }
+        });
+
+
+        // 横向滚动
+        // 获取滚动容器
+        const scrollContainer = document.getElementById('scrollContainer');
+
+        // 监听鼠标滚轮事件，将垂直滚动转换为水平滚动
+        scrollContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            scrollContainer.scrollLeft += e.deltaY;
+        });
+
+        // 第一个视频
+        // 点击文字遮罩消失视频播放
+        const kunjing = document.getElementById('kunjing');
+        const video = document.getElementById('mainVideo');
+        const playButton = document.getElementById('playButton');
+
+        // 点击按钮直接播放视频并隐藏覆盖层
+        playButton.addEventListener('click', async function () {
+            try {
+                // 尝试直接播放视频（用户交互触发，符合浏览器自动播放政策）
+                await video.play();
+
+                // 播放成功后隐藏覆盖层
+                kunjing.style.opacity = '0';
+                setTimeout(() => {
+                    kunjing.style.display = 'none';
+                }, 500);
+            } catch (error) {
+                // 处理极少数情况下的播放失败（如视频加载问题）
+                console.error('视频播放失败:', error);
+                alert('视频播放失败，请重试');
+            }
+        });
+        // 点击文字遮罩消失视频播放
+        const kunjing2 = document.getElementById('kunjing2');
+        const video2 = document.getElementById('mainVideo2');
+        const playButton2 = document.getElementById('playButton2');
+
+        // 点击按钮直接播放视频并隐藏覆盖层
+        playButton2.addEventListener('click', async function () {
+            try {
+                // 尝试直接播放视频（用户交互触发，符合浏览器自动播放政策）
+                await video2.play();
+
+                // 播放成功后隐藏覆盖层
+                kunjing2.style.opacity = '0';
+                setTimeout(() => {
+                    kunjing2.style.display = 'none';
+                }, 500);
+            } catch (error) {
+                // 处理极少数情况下的播放失败（如视频加载问题）
+                console.error('视频播放失败:', error);
+                alert('视频播放失败，请重试');
+            }
+        });
+        // 按钮悬停效果
+        playButton.addEventListener('mouseover', function () {
+            this.style.transform = 'translateY(-3px)';
+            this.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.3)';
+        });
+
+        playButton.addEventListener('mouseout', function () {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
+        });
+    </script>
+
+</body>
+
+</html>

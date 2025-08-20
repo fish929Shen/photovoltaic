@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科幻风格弹幕效果</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0a0a1a;
+            overflow: hidden;
+        }
+
+        .barrage-container {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .barrage-item {
+            position: absolute;
+            white-space: nowrap;
+            color: #00f7ff;
+            /* 科幻蓝绿色 */
+            font-size: 24px;
+            font-family: 'Microsoft YaHei', sans-serif;
+            text-shadow: 0 0 5px rgba(0, 247, 255, 0.5);
+            opacity: 0.8;
+            will-change: transform;
+            animation: barrage-move linear infinite;
+        }
+
+        .barrage-item.highlight {
+            color: #00ff9d;
+            /* 高亮使用更亮的蓝绿色 */
+            font-weight: bold;
+            opacity: 1;
+            text-shadow: 0 0 15px #00ff9d;
+        }
+
+        @keyframes barrage-move {
+            0% {
+                transform: translateX(100vw);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="barrage-container" id="barrageContainer"></div>
+
+    <script>
+        // 弹幕数据
+        const barrageData = [
+            "避雷农村光伏发电项目！越早跑！越好！",
+            "千万不要装光伏！！",
+            "这东西装了以后，半径50米以内信号极差。",
+            "过来人告诉你，光伏就是骗子，25年等于把房子交给光伏公司了，25年不能出租不能卖房。如果这玩意儿真的好，那他直接跟老百姓签一份屋顶租赁合同就行了。他们的光伏合同非常复杂，各种条款责任，肯定有诈",
+            "我老公叔叔就是做这个的，人家开的公司，多少年前就做了，但是他只给厂房，国企单位，大型用电的装，前两年 我们这很多人装，家里人家想装，经不住忽悠，然后叔叔直接说，私人家里，不要装你品你细品！",
+            "你就这样想，这玩意儿要是真的好，会轮得到咱们老百姓吗",
+            "我们这儿光伏公司干个几年就倒闭，然后没有地方追究，没有专人修理了，就得自己掏钱",
+            "都25年了 还安装这个 赚了钱的早安装了 现在电费都低了吧",
+            "我爸妈也是安装了这个，唉",
+            "不安",
+            "是骗子很多，坑很多，而且现在弄光伏有点晚了，收益补贴很低了，不如刚开始的时候了",
+            "我们村群里说了，自愿安装，但是村里不提倡",
+            "其实现在光伏造价下来，收益是挺不错的。但是家装收益太低了，我们都是和产业园合作",
+            "记住了，好事轮不到我们",
+            "这么好的事情能轮得到我们普通老百姓吗？",
+            "安装了会后悔吐血，农村人就是好骗，有什么赚钱的都先在农村搞一道",
+            "你装了光伏的话，你到时候要拆了，就要经过政府的评准，人家政府说不定不给你拆。",
+            "我们这边都喊停了，就是坑人的",
+            "隔壁安装了光伏，现在一点多了，现在是噪音可大了，这是为什么？像大苍蝇在嗡嗡响，好恶心人",
+            "装光伏？有好处能轮到你？村长不优先？难道你是那个最幸运的人吗？凡是大力禁止的肯定是有好处不想让你占。凡是大力推举的肯定是有坑让你填！",
+            "装了2个月，想拆也拆不下去，下雨天大风天，声音特别大，辐射还很大，屋顶全是洞，太阳能的光也被挡了一半，冬天都没有热水，收点租金得不偿失",
+            "外国人发展时，你们看多先进，多环保。我国发展后，落后，辐射，不环保。",
+            "自己家没装的没有发言权，我家就没装这东西真那么好，还用得着上门推销吗？难道农村与世隔绝？为啥都推销到农村去呢？因为农村只有老人，他们不懂，给点好处老人就同意装了",
+            "環保是騙局。 太陽能板本身也是有毒，會對自然環境造成嚴重汙染。",
+            "这东西自己买，发电自己用，多的还可以卖给供电局。把屋顶租给别人就不划算了"
+        ];
+
+        // 初始化弹幕
+        function initBarrage() {
+            const container = document.getElementById('barrageContainer');
+
+            // 持续生成弹幕
+            setInterval(() => {
+                createBarrageItem(container);
+            }, 500);
+        }
+
+        // 创建单个弹幕
+        function createBarrageItem(container) {
+            const item = document.createElement('div');
+            item.className = 'barrage-item';
+
+            // 随机选择弹幕内容
+            const randomText = barrageData[Math.floor(Math.random() * barrageData.length)];
+
+            item.textContent = randomText;
+
+            // 随机位置和速度
+            const top = Math.random() * 90;
+            const duration = 10 + Math.random() * 20;
+            const fontSize = 20 + Math.random() * 20;
+
+            item.style.top = `${top}vh`;
+            item.style.fontSize = `${fontSize}px`;
+            item.style.animationDuration = `${duration}s`;
+
+            // 悬停效果
+            item.addEventListener('mouseenter', () => {
+                item.classList.add('highlight');
+                item.style.animationPlayState = 'paused';
+            });
+
+            item.addEventListener('mouseleave', () => {
+                item.classList.remove('highlight');
+                item.style.animationPlayState = 'running';
+            });
+
+            // 弹幕结束后移除
+            item.addEventListener('animationend', () => {
+                item.remove();
+            });
+
+            container.appendChild(item);
+        }
+
+        // 页面加载后启动弹幕
+        window.addEventListener('load', initBarrage);
+    </script>
+</body>
+
+</html>
