@@ -1,0 +1,131 @@
+ .story-in {
+     position: relative;
+     width: 100vw;
+     overflow: hidden;
+     min-height: 100vh;
+     /* 确保至少占满一个屏幕高度 */
+     background-image: url('../img/part1-village.png');
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     background-attachment: fixed;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+ }
+
+ @keyframes glow {
+     0% {
+         text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+     }
+
+     50% {
+         text-shadow: 0 0 8px #fff, 0 0 15px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6;
+     }
+
+     100% {
+         text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+     }
+ }
+
+ /* 引入故事的文字 */
+ .story-in-text {
+     width: 90%;
+     /* 增加左右边距 */
+     max-width: 1500px;
+     /* 限制最大宽度 */
+     /* min-height: 100vh; */
+     /* 确保至少占满一个屏幕高度 */
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     font-size: clamp(1.5rem, 5vw, 2.8rem);
+     /* 响应式字体大小 */
+     color: #fff;
+     text-align: center;
+     /* 确保文字居中 */
+     padding: 20px;
+     /* 内边距 */
+     margin: 0 auto;
+     /* 水平居中 */
+     opacity: 0;
+     transform: translateY(30px);
+     /* 初始位置下移 */
+     transition: opacity 0.8s ease, transform 0.8s ease;
+     margin-bottom: 100px;
+ }
+
+ .story-in-text.visible {
+     opacity: 1;
+     transform: translateY(0);
+     animation: glow 4s ease-in-out infinite alternate;
+ }
+
+ /* 响应式调整 */
+ @media (max-width: 768px) {
+     .story-in-text {
+         font-size: clamp(1.2rem, 6vw, 2rem);
+         /* 移动端更小的字体 */
+         padding: 10px;
+     }
+ }
+
+ @media (max-width: 480px) {
+     .story-in-text {
+         width: 95%;
+         /* 移动端更宽的内容区域 */
+     }
+ }
+
+
+
+
+
+
+ .story-in-horizontal-wapper {
+     position: relative;
+     width: 100%;
+     overflow: hidden;
+     height: 40rem;
+ }
+
+ .story-in-horizontal-container {
+     position: sticky;
+     top: 0;
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     width: 100%;
+     height: 100vh;
+     background-color: #19f7003c;
+     overflow: hidden;
+ }
+
+ .story-in-horizontal-card {
+     width: 60rem;
+     height: 36rem;
+     background: #f7f7f7;
+     margin-right: 20rem;
+     border-radius: 16px;
+     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     font-size: 2rem;
+     color: #222;
+     flex-shrink: 0;
+     font-family: impact;
+ }
+
+ @media (max-width: 900px) {
+     .story-in-horizontal-card {
+         width: 90vw;
+         height: 24rem;
+         font-size: 1.2rem;
+     }
+
+     .story-in-horizontal-wapper {
+         height: 28rem;
+     }
+ }

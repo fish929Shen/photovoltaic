@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+    padding: 0;
+    /* display: flex;
+    justify-content: center; */
+    /* 水平居中 */
+    /* align-items: center; */
+    /* 垂直居中 */
+}
+
+/* 文字发光动画 */
+@keyframes pulsate {
+    0% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+    }
+
+    50% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6;
+    }
+
+    100% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+    }
+}
+
+:root {
+    --neon-pink: #67E7D0;
+    --neon-blue: #603BBD;
+    --neon-purple: #67E7D0;
+    --neon-green: #00ff9d;
+    --dark-bg: #0d0221;
+    --text-glow: 0 0 10px currentColor;
+    --card-glow: 0 0 20px currentColor;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+body {
+    background-color: #070f39;
+    background-color: var(--dark-bg);
+    color: white;
+    font-family: 'Rajdhani', 'Arial', sans-serif;
+    overflow-x: hidden;
+    background-image:
+        linear-gradient(rgba(5, 217, 232, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(5, 217, 232, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+@font-face {
+    font-family: 'Rajdhani';
+    src: url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap');
+}
+
+.loading {
+    position: fixed;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #f7f7f7;
+    z-index: 100000000;
+    transition: 1s ease;
+}
+
+.loading_out {
+    transform: translateY(100%);
+}
+
+.loading_out svg,
+.loading_out p {
+    opacity: 0;
+}
+
+/* Logo容器 - 响应式定位 */
+.logo-container {
+    position: fixed;
+    top: clamp(15px, 3vw, 30px);
+    left: clamp(15px, 3vw, 30px);
+    z-index: 1000;
+    cursor: pointer;
+    /* 新增：让容器成为定位基准，子元素相对此容器定位 */
+    display: inline-block;
+
+}
+
+/* Logo样式 - 响应式大小 */
+.logo {
+    width: clamp(50px, 10vw, 80px);
+    height: clamp(50px, 10vw, 80px);
+    object-fit: contain;
+    position: relative;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+    /* 取值范围 0（完全透明）到 1（完全不透明） */
+
+    border-radius: 20px;
+}
+
+/* Logo发光效果 - 使用滤镜实现 */
+.logo-container:hover .logo {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* 菜单样式 - 响应式调整 */
+.menu-item {
+    padding: clamp(5px, 1vw, 8px) 0;
+    font-size: clamp(12px, 2vw, 16px);
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.logo-menu {
+    /* 改为相对容器底部定位，初始与图片重合 */
+    position: absolute;
+    top: 100%;
+    /* 从图片底部开始定位 */
+    left: 50%;
+    transform: translateX(-50%) translateY();
+    /* 初始向上偏移，与图片重合 */
+    /* position: absolute;
+    left: 50%;
+    transform: translateX(-50%); */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    /* 文字水平居中（核心属性） */
+    border-radius: 5px;
+    min-width: 80px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.menu-item:hover {
+    color: white;
+    transform: scale(1.1);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+/* 新增.logo-container的hover状态控制.logo-menu */
+.logo-container:hover .logo-menu {
+    display: flex;
+    /* 显示菜单 */
+    opacity: 1;
+    /* 完全不透明 */
+    transform: translateX(-50%) translateY(0);
+    /* 取消向上偏移，显示在下方 */
+
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .logo-container:hover .logo {
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+    }
+
+    .logo-menu {
+        margin-top: 10px;
+        padding: 8px;
+    }
+
+    .menu-item {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .logo-container {
+        top: 10px;
+        left: 10px;
+    }
+
+    .menu-item {
+        font-size: 12px;
+        padding: 4px 0;
+    }
+}
+
+/* 正文部分 */
+/* 头页 */
+.head img {
+    width: 100vw;
+    height: auto;
+}

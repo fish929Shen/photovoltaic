@@ -1,0 +1,341 @@
+.vertical-center {
+    background-image:
+        radial-gradient(circle at 100% 100%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
+        linear-gradient(to right, rgba(157, 78, 221, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(157, 78, 221, 0.05) 1px, transparent 1px);
+    background-size: 100% 100%, 30px 30px, 30px 30px;
+    color: #f0f0f0;
+    line-height: 1.6;
+    position: relative;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.scroll {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-45%, 50%);
+    width: 90%;
+    max-width: 1800px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+}
+
+
+.section-title h2::before {
+    content: '// ';
+    color: #ff2a6d;
+}
+
+.section-title h2::after {
+    content: ' \\';
+    color: #ff2a6d;
+}
+
+.section-title p {
+    color: #9d4edd;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(157, 78, 221, 0.5);
+}
+
+/* 滚动容器 */
+.scroll-container {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+    padding: 20px 0;
+    scrollbar-width: none;
+    /* Firefox */
+    margin-bottom: 20px;
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Edge */
+}
+
+/* 卡片轨道 */
+.card-track {
+    display: flex;
+    gap: 40px;
+    padding: 20px 0;
+    width: max-content;
+    position: relative;
+}
+
+.card-track::before,
+.card-track::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 5;
+}
+
+.card-track::before {
+    left: 0;
+    background: linear-gradient(to right, #0d0221, transparent);
+}
+
+.card-track::after {
+    right: 0;
+    background: linear-gradient(to left, #0d0221, transparent);
+}
+
+/* 卡片样式 - 矮宽设计 */
+.card-scroll {
+    width: 40vw;
+    height: 400px;
+    flex-shrink: 0;
+    background-color: rgba(13, 2, 33, 0.8);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    border-radius: 4px;
+    box-shadow:
+        0 0 15px rgba(0, 240, 255, 0.2),
+        inset 0 0 20px rgba(157, 78, 221, 0.1);
+    padding: 30px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+
+}
+
+.card-scroll::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+}
+
+.card-scroll.economy::before {
+    background: linear-gradient(90deg, #ff2a6d, #f9f002);
+    box-shadow: 0 0 10px #ff2a6d;
+}
+
+.card-scroll.abundance::before {
+    background: linear-gradient(90deg, #00f0ff, #39ff14);
+    box-shadow: 0 0 10px #00f0ff;
+}
+
+.card-scroll.efficiency::before {
+    background: linear-gradient(90deg, #9d4edd, #00f0ff);
+    box-shadow: 0 0 10px #9d4edd;
+}
+
+.card-scroll:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+        0 0 25px rgba(0, 240, 255, 0.4),
+        inset 0 0 20px rgba(157, 78, 221, 0.2);
+    border-color: rgba(0, 240, 255, 0.6);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed rgba(0, 240, 255, 0.2);
+}
+
+.card-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background-color: rgba(13, 2, 33, 0.5);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+.card-scroll.economy .card-icon {
+    box-shadow: 0 0 15px rgba(255, 42, 109, 0.5);
+    border-color: #ff2a6d;
+}
+
+.card-scroll.abundance .card-icon {
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+    border-color: #00f0ff;
+}
+
+.card-scroll.efficiency .card-icon {
+    box-shadow: 0 0 15px rgba(157, 78, 221, 0.5);
+    border-color: #9d4edd;
+}
+
+.card-icon i {
+    font-size: 2.2rem;
+}
+
+.card-scroll.economy .card-icon i {
+    color: #ff2a6d;
+    text-shadow: 0 0 10px #ff2a6d;
+}
+
+.card-scroll.abundance .card-icon i {
+    color: #00f0ff;
+    text-shadow: 0 0 10px #00f0ff;
+}
+
+.card-scroll.efficiency .card-icon i {
+    color: #9d4edd;
+    text-shadow: 0 0 10px #9d4edd;
+}
+
+.card-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-scroll.economy .card-title {
+    color: #f9f002;
+    text-shadow: 0 0 10px rgba(249, 240, 2, 0.5);
+}
+
+.card-scroll.abundance .card-title {
+    color: #39ff14;
+    text-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+}
+
+.card-scroll.efficiency .card-title {
+    color: #00f0ff;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.card-content {
+    font-size: 1.5rem;
+    line-height: 1.8;
+    color: #e0e0ff;
+    position: relative;
+    padding-left: 15px;
+}
+
+.card-content::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, currentColor, transparent);
+    opacity: 0.5;
+}
+
+/* 数字高亮样式 */
+.number-highlight {
+    font-weight: 700;
+    text-shadow: 0 0 8px currentColor;
+    padding: 0 3px;
+}
+
+.card-scroll.economy .number-highlight {
+    color: #f9f002;
+}
+
+.card-scroll.abundance .number-highlight {
+    color: #00f0ff;
+}
+
+.card-scroll.efficiency .number-highlight {
+    color: #9d4edd;
+}
+
+/* 像素化装饰元素 */
+.pixel-decoration {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #00f0ff;
+    box-shadow: 0 0 5px #00f0ff;
+}
+
+.pixel-tl {
+    top: 10px;
+    left: 10px;
+}
+
+.pixel-tr {
+    top: 10px;
+    right: 10px;
+}
+
+.pixel-bl {
+    bottom: 10px;
+    left: 10px;
+}
+
+.pixel-br {
+    bottom: 10px;
+    right: 10px;
+}
+
+/* 滚动提示 */
+.scroll-hint {
+    text-align: center;
+    margin: 20px 0;
+    color: #00f0ff;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px #00f0ff;
+    position: relative;
+}
+
+.scroll-hint::before {
+    content: '[ ';
+}
+
+.scroll-hint::after {
+    content: ' ]';
+}
+
+.scroll-hint i {
+    margin: 0 10px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+
+@media (max-width: 768px) {
+    .card-scroll {
+        width: 90vw;
+        height: auto;
+        min-height: 300px;
+        padding: 25px;
+    }
+
+    .section-title h2 {
+        font-size: 2rem;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+    }
+
+    .card-content {
+        font-size: 1rem;
+    }
+}

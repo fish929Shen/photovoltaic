@@ -1,0 +1,473 @@
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+} */
+
+/* body {
+    background-color: #0a0a1a;
+    color: #e0e0e0;
+    overflow: hidden; 
+} */
+
+.sec1 {
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    /* background-color: #0A0A0F; */
+}
+
+
+/* 以下是转机与里程碑的格式 */
+/* 左侧图片容器 */
+.left-image-container {
+    position: absolute;
+    left: 7vw;
+    top: 10vh;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    /* 水平中心靠下的位置 */
+    transition: all 0.8s ease-in-out;
+}
+
+.main-image {
+    max-height: 90vh;
+    max-width: 100%;
+    object-fit: contain;
+    transition: all 0.8s ease-in-out;
+    filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.3));
+}
+
+/* 按钮样式 */
+.action-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 12px 30px;
+    background-color: #FF2A6D;
+    color: white;
+    border: 2px solid #FF2A6D;
+    border-radius: 4px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    z-index: 10;
+    box-shadow: 0 0 15px rgba(255, 42, 109, 0.6);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.action-button:hover {
+    background-color: rgba(255, 42, 109, 0.8);
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 42, 109, 0.8);
+}
+
+/* 信息文本样式 */
+.info-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 400px;
+    color: white;
+    font-size: 1.5rem;
+    line-height: 1.8;
+    text-align: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.6s ease;
+    text-shadow: 0 0 8px rgba(235, 244, 244, 0.97);
+}
+
+/* 右侧内容 */
+.right-content {
+    position: absolute;
+    right: 2vw;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+
+    justify-content: center;
+}
+
+/* 年份数字 */
+.year-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10vw;
+    line-height: 25vh;
+    font-weight: 900;
+    color: rgba(0, 240, 255, 0.8);
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.5),
+        0 0 40px rgba(0, 240, 255, 0.3);
+    margin-bottom: 3vh;
+    transition: all 0.6s ease;
+}
+
+/* 右侧图片 */
+.right-image {
+    max-height: 50vh;
+    max-width: 80%;
+    object-fit: contain;
+    transition: all 0.8s ease-in-out;
+    /* filter: drop-shadow(0 0 15px rgba(255, 222, 0, 0.3)); */
+}
+
+/* 状态切换类 */
+.section-active .main-image {
+    transform: scale(0.9);
+}
+
+.section-active .action-button {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+}
+
+.section-active .info-text {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.section-active .year-number {
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.8),
+        0 0 40px rgba(0, 240, 255, 0.5);
+    transform: scale(1.05);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+
+    .left-image-container,
+    .right-content {
+        width: 100%;
+        position: relative;
+    }
+
+    .left-image-container {
+        height: 50%;
+        padding-bottom: 5vh;
+    }
+
+    .right-content {
+        height: 50%;
+    }
+
+    .action-button {
+        left: 50%;
+        width: 80%;
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    .year-number {
+        font-size: 12vh;
+        margin-bottom: 2vh;
+    }
+}
+
+
+
+
+/* 以下是第二部分时间轴的格式 */
+/* 时间轴 */
+.main {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-btn {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    left: 27%;
+    z-index: 999;
+    font-size: 80px;
+    font-weight: 900;
+    color: #fff;
+    cursor: pointer;
+    text-shadow: 0 0 10px #0ff0fc;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-btn:hover {
+    text-shadow: 0 0 20px #ff00ff;
+    transform: scale(1.1);
+}
+
+#up-btn {
+    top: 5%;
+}
+
+#down-btn {
+    bottom: 5%;
+}
+
+#content {
+    width: 30%;
+    height: 100%;
+    position: absolute;
+    left: 15%;
+    overflow: hidden;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    padding-right: 20px;
+}
+
+.card-time {
+    font-size: 40px;
+    font-weight: 700;
+    color: #0ff0fc;
+    margin-bottom: 15px;
+    text-shadow: 0 0 8px rgba(0, 255, 252, 0.6);
+    position: relative;
+    padding-left: 20px;
+}
+
+.card-time::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background-color: #ff00ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+.card-title {
+    font-size: 36px;
+    font-weight: 500;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    color: #fff;
+    position: relative;
+}
+
+.card-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, #ff00ff, transparent);
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+.card-passage {
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.milestone .card-time {
+    color: #ff00ff;
+    text-shadow: 0 0 8px rgba(255, 0, 255, 0.6);
+}
+
+.milestone .card-time::before {
+    background-color: #0ff0fc;
+    box-shadow: 0 0 10px #0ff0fc;
+    width: 12px;
+    height: 12px;
+}
+
+.milestone .card-title {
+    color: #0ff0fc;
+}
+
+.milestone .card-title::after {
+    background: linear-gradient(90deg, #0ff0fc, transparent);
+    box-shadow: 0 0 10px #0ff0fc;
+}
+
+#clock {
+    height: 130%;
+    aspect-ratio: 1 / 1;
+    position: absolute;
+    right: -28%;
+    top: -15%;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: #0ff0fc 15px solid;
+    box-shadow: 0 0 30px rgba(0, 255, 252, 0.5),
+        inset 0 0 30px rgba(0, 255, 252, 0.3);
+}
+
+#clock-table {
+    width: 96%;
+    height: 96%;
+    border-radius: 50%;
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.invisible-table {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transform-origin: 50% 50%;
+    position: absolute;
+}
+
+.clock-thick {
+    width: 6%;
+    height: 6px;
+    background-color: #0ff0fc;
+    position: absolute;
+    top: calc(50% - 3px);
+    left: 0px;
+    box-shadow: 0 0 10px #0ff0fc;
+}
+
+.clock-thick span {
+    font-size: 36px;
+    position: absolute;
+    left: 140%;
+    top: calc(50% - 20px);
+    color: #0ff0fc;
+    text-shadow: 0 0 8px rgba(0, 255, 252, 0.6);
+}
+
+.clock-scale {
+    width: 4%;
+    height: 2px;
+    background-color: rgba(0, 255, 252, 0.5);
+    position: absolute;
+    top: calc(50% - 1px);
+    left: 0px;
+}
+
+/* 添加赛博朋克风格的网格背景 */
+.cyber-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(0, 255, 252, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 252, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* @keyframes scan {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100%);
+    }
+} */
+
+/* 添加一些随机闪烁的灯光效果 */
+.glow-dots {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.glow-dot {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #0ff0fc;
+    box-shadow: 0 0 10px 2px #0ff0fc;
+    opacity: 0.3;
+    animation: glow-flicker 3s infinite alternate;
+}
+
+@keyframes glow-flicker {
+
+    0%,
+    100% {
+        opacity: 0.2;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 1000px) {
+    #clock {
+        right: -90%;
+    }
+
+    #content {
+        width: 50%;
+        left: 10%;
+    }
+
+    .nav-btn {
+        left: 15%;
+    }
+}
+
+@media (max-width: 768px) {
+    #content {
+        width: 70%;
+        left: 5%;
+    }
+
+    .card-time {
+        font-size: 32px;
+    }
+
+    .card-title {
+        font-size: 28px;
+    }
+
+    .card-passage {
+        font-size: 16px;
+    }
+
+    .clock-thick span {
+        font-size: 28px;
+    }
+}
+
+/* 第三部分水平滑动的卡片见引入 */

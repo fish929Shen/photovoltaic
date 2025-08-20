@@ -1,0 +1,880 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* 文字发光动画 */
+@keyframes pulsate {
+    0% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+    }
+
+    50% {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6;
+    }
+
+    100% {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+    }
+}
+
+:root {
+    --neon-pink: #67E7D0;
+    --neon-blue: #603BBD;
+    --neon-purple: #67E7D0;
+    --neon-green: #00ff9d;
+    --dark-bg: #0d0221;
+    --text-glow: 0 0 10px currentColor;
+    --card-glow: 0 0 20px currentColor;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+body {
+    background-color: #070f39;
+    background-color: var(--dark-bg);
+    color: white;
+    font-family: 'Rajdhani', 'Arial', sans-serif;
+    overflow-x: hidden;
+
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+@font-face {
+    font-family: 'Rajdhani';
+    src: url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap');
+}
+
+.loading {
+    position: fixed;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #f7f7f7;
+    z-index: 100000000;
+    transition: 1s ease;
+}
+
+.loading_out {
+    transform: translateY(100%);
+}
+
+.loading_out svg,
+.loading_out p {
+    opacity: 0;
+}
+
+/* Logo容器 - 响应式定位 */
+.logo-container {
+    position: fixed;
+    top: clamp(15px, 3vw, 30px);
+    left: clamp(15px, 3vw, 30px);
+    z-index: 1000;
+    cursor: pointer;
+    /* 新增：让容器成为定位基准，子元素相对此容器定位 */
+    display: inline-block;
+
+}
+
+/* Logo样式 - 响应式大小 */
+.logo {
+    width: clamp(50px, 10vw, 80px);
+    height: clamp(50px, 10vw, 80px);
+    object-fit: contain;
+    position: relative;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+    /* 取值范围 0（完全透明）到 1（完全不透明） */
+
+    border-radius: 20px;
+}
+
+/* Logo发光效果 - 使用滤镜实现 */
+.logo-container:hover .logo {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    .logo-container:hover .logo {
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+    }
+
+    .logo-menu {
+        margin-top: 10px;
+        padding: 8px;
+    }
+
+    .menu-item {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .logo-container {
+        top: 10px;
+        left: 10px;
+    }
+
+    .menu-item {
+        font-size: 12px;
+        padding: 4px 0;
+    }
+}
+
+/* 正文部分 */
+/* 头页 */
+.head img {
+    width: 100vw;
+    height: auto;
+}
+
+/* 开头的文字和图片效果 */
+.alert-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 2rem;
+
+
+    /* background-image:
+        radial-gradient(circle at 20% 30%, rgba(30, 215, 96, 0.1) 0%, transparent 40%), */
+    /* radial-gradient(circle at 80% 70%, rgba(131, 56, 236, 0.1) 0%, transparent 40%); */
+}
+
+/* 黄黑警报线 */
+.alert-line {
+    width: 100%;
+    height: 30px;
+    background: repeating-linear-gradient(45deg,
+            #ffd700,
+            #ffd700 10px,
+            #000 10px,
+            #000 20px);
+    filter: drop-shadow(0 0 5px #ffd700);
+    position: absolute;
+    left: 0;
+    z-index: 10;
+}
+
+.alert-line.top {
+    top: 20%;
+}
+
+.alert-line.bottom {
+    bottom: 20%;
+}
+
+.content-wrapper {
+    text-align: center;
+    max-width: 800px;
+    z-index: 20;
+    animation: pulse 2s infinite alternate;
+}
+
+.exclamation {
+    color: #ffd700;
+    font-size: 3rem;
+    text-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
+    margin-right: 1rem;
+    display: inline-block;
+}
+
+.alert-title {
+    color: #ff3e3e;
+    font-size: 3.5rem;
+    text-shadow: 0 0 10px #ff3e3e, 0 0 20px rgba(255, 62, 62, 0.5);
+    margin-bottom: 1.5rem;
+    display: inline-block;
+}
+
+.alert-message {
+    color: #00f0ff;
+    font-size: 1.8rem;
+    margin-bottom: 2.5rem;
+    text-shadow: 0 0 10px #00f0ff, 0 0 20px rgba(0, 240, 255, 0.5);
+    line-height: 1.5;
+}
+
+.alert-btn {
+    background: #ffd700;
+    color: #000;
+    border: 2px solid #ffd700;
+    padding: 1rem 3rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 0 10px #ffd700, 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.alert-btn:hover {
+    background: #000;
+    color: #ffd700;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #ffd700, 0 0 30px rgba(255, 215, 0, 0.7);
+}
+
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: scale(1.02);
+        opacity: 1;
+    }
+}
+
+@keyframes flicker {
+
+    0%,
+    19.999%,
+    22%,
+    62.999%,
+    64%,
+    64.999%,
+    70%,
+    100% {
+        opacity: 0.99;
+    }
+
+    20%,
+    21.999%,
+    63%,
+    63.999%,
+    65%,
+    69.999% {
+        opacity: 0.4;
+    }
+}
+
+.flicker {
+    animation: flicker 3s infinite;
+}
+
+
+
+
+
+
+
+
+
+/* 卡片的布局 */
+:root {
+    --primary-color: #00f7ff;
+    --secondary-color: #ff00e6;
+    --bg-color: #0a0a1a;
+    --card-bg: rgba(10, 10, 26, 0.8);
+    --border-color: rgba(0, 247, 255, 0.3);
+    --text-color: #ffffff;
+    --highlight-color: #ff00e6;
+}
+
+
+
+body {
+
+    color: var(--text-color);
+    overflow-x: hidden;
+    background-image:
+        radial-gradient(circle at 25% 25%, rgba(0, 247, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 0, 230, 0.1) 0%, transparent 50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+@font-face {
+    font-family: 'Orbitron';
+    src: url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap');
+}
+
+/* 为内容文本添加首行缩进 */
+.content-text {
+    line-height: 1.8;
+    font-size: 1.8rem;
+    font-weight: 200;
+    text-indent: 2em;
+    /* 添加首行缩进 */
+}
+
+/* 内容板块中的特殊布局 */
+
+.barrage-container {
+    height: 200px;
+    /* 设置固定高度 */
+    width: 100%;
+    position: relative;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.barrage-item {
+    position: absolute;
+    white-space: nowrap;
+    color: var(--text-color);
+    font-size: 1.4rem;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    animation: barrage-move 15s linear infinite;
+}
+
+.barrage-item.highlight {
+    color: var(--primary-color);
+    font-weight: bold;
+    opacity: 1;
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+/* 左右分栏布局 */
+.split-layout {
+    display: flex;
+    height: 100%;
+    gap: 20px;
+}
+
+.split-left {
+    flex: 0 0 30%;
+}
+
+.split-right {
+    flex: 1;
+}
+
+/* 图片背景 */
+.image-background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* iframe样式 */
+.content-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--card-bg);
+}
+
+
+
+/* 修改1：容器宽度调整为80% */
+.container {
+    display: flex;
+    min-height: 90vh;
+    position: relative;
+    width: 85%;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+/* 修改2：导航栏样式调整 */
+.nav-bar {
+    z-index: 100;
+    position: relative;
+    width: 120px;
+
+    background-color: rgba(10, 10, 26, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 35px;
+    /* 增大圆角 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    z-index: 10;
+    height: auto;
+    /* 不固定高度 */
+    margin: 20px;
+    box-shadow: 0 0 30px rgba(0, 247, 255, 0.2);
+}
+
+.nav-icon {
+    width: 70px;
+    height: 70px;
+    margin: 20px 0;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    /* 增大图标圆角 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+}
+
+.nav-icon:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.nav-icon.active {
+    background-color: var(--primary-color);
+    box-shadow: 0 0 30px var(--primary-color);
+}
+
+.nav-icon::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(0, 247, 255, 0.3), transparent);
+    transform: translateX(-100%);
+    transition: 0.5s;
+}
+
+.nav-icon:hover::before {
+    transform: translateX(100%);
+}
+
+.nav-icon i {
+    font-size: 32px;
+    color: var(--text-color);
+}
+
+/* 主内容区 */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+
+}
+
+/* 顶部区域 */
+.top-section {
+    height: 20vh;
+    display: flex;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+.info-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-right: 30px;
+    justify-content: center;
+}
+
+.difficulty {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.difficulty-label {
+    margin-right: 15px;
+    font-size: 24px;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.difficulty .star {
+    color: var(--highlight-color);
+    margin-right: 8px;
+    font-size: 28px;
+}
+
+.title {
+    font-size: 3.5vw;
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--primary-color), var(--highlight-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
+    margin-bottom: 0;
+}
+
+.weapon-panel {
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.weapon-icon {
+    width: 100px;
+    height: 100px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.weapon-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px var(--highlight-color);
+    border-color: var(--highlight-color);
+}
+
+.weapon-icon i {
+    font-size: 48px;
+}
+
+.weapon-tooltip {
+    position: absolute;
+    right: calc(100% + 15px);
+    width: 350px;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.weapon-icon:hover+.weapon-tooltip {
+    opacity: 1;
+    right: calc(100% + 5px);
+}
+
+/* 内容区域 */
+.content-section {
+    flex: 1;
+    min-height: 200px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 0 20px rgba(0, 247, 255, 0.2);
+}
+
+.content-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid transparent;
+    border-image: linear-gradient(45deg, var(--primary-color), var(--highlight-color)) 1;
+    animation: borderPulse 4s infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes borderPulse {
+    0% {
+        box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+    }
+
+    100% {
+        box-shadow: 0 0 30px rgba(0, 247, 255, 0.7);
+    }
+}
+
+.content-text {
+    line-height: 1.8;
+    font-size: 1.8rem;
+    font-weight: 200;
+}
+
+/* 导航箭头 - 优化排版版 */
+.nav-arrow {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    /* 适当增大容器，避免内容拥挤 */
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    /* 垂直排列文字和图标 */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 5;
+    animation: float 2s ease-in-out infinite;
+    background-color: rgba(10, 10, 26, 0.7);
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    /* 统一过渡效果 */
+}
+
+.nav-arrow.up {
+    top: 30px;
+}
+
+.nav-arrow.down {
+    bottom: -30px;
+}
+
+/* 文字样式优化 */
+.nav-arrow p {
+    margin: 0 0 4px 0;
+    /* 仅保留与图标之间的间距 */
+    padding: 0;
+    font-size: 13px;
+    /* 精致的文字大小 */
+    color: var(--text-color, #ffffff);
+    /* 默认为白色，确保可见性 */
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    /* 微调字间距增强可读性 */
+}
+
+/* 图标样式优化 */
+.nav-arrow i {
+    font-size: 24px;
+    /* 与文字比例协调 */
+    color: var(--primary-color);
+    line-height: 1;
+    /* 确保图标垂直居中 */
+    transition: color 0.3s ease;
+}
+
+/* 交互效果增强 */
+.nav-arrow:hover i {
+    color: var(--highlight-color);
+}
+
+.nav-arrow:hover {
+    box-shadow: 0 0 20px var(--primary-color);
+    border-color: var(--primary-color);
+    background-color: rgba(10, 10, 26, 0.85);
+    /*  hover时略微加深背景 */
+}
+
+/* 动画优化（避免与transform冲突） */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(15px);
+    }
+}
+
+/* 赛博未来特效 */
+.cyber-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    /* 添加相对定位作为子元素的定位基准 */
+    position: relative;
+}
+
+
+
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: particle-float 10s infinite linear;
+}
+
+@keyframes particle-float {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.5;
+    }
+
+    90% {
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(-100vh) translateX(100px);
+        opacity: 0;
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        flex-direction: column;
+    }
+
+    .nav-bar {
+        width: 90%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px;
+        margin: 10px auto;
+    }
+
+    .nav-icon {
+        margin: 10px;
+        width: 60px;
+        height: 60px;
+    }
+
+    .nav-icon i {
+        font-size: 28px;
+    }
+
+    .top-section {
+        flex-direction: column;
+        height: auto;
+        align-items: flex-start;
+        margin-bottom: 30px;
+    }
+
+    .info-panel {
+        padding-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .title {
+        font-size: 2.5rem;
+    }
+
+    .difficulty-label {
+        font-size: 20px;
+    }
+
+    .difficulty .star {
+        font-size: 24px;
+    }
+
+    .weapon-panel {
+        width: 100%;
+        margin-top: 30px;
+        justify-content: flex-start;
+    }
+
+    .weapon-tooltip {
+        right: auto;
+        left: 120px;
+    }
+
+    .weapon-icon:hover+.weapon-tooltip {
+        right: auto;
+        left: 110px;
+    }
+
+    .content-text {
+        font-size: 1.2rem;
+    }
+}
+
+
+
+/* 修改霸权部分样式 */
+.hegemony-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: rgba(10, 10, 26, 0.7);
+    background-image: url('./img/part4-nav4.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.hegemony-text {
+    flex: 1;
+    background-color: rgba(10, 10, 26, 0.7);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.hegemony-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hegemony-image img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px;
+    background-color: rgba(234, 234, 255, 0.354);
+}

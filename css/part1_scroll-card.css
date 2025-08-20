@@ -1,0 +1,147 @@
+.cardsbox_card_wapper {
+    display: flex;
+    position: relative;
+    width: 100%;
+}
+
+.cardsbox_card_container {
+    /* position: sticky;
+    top: 0; */
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    /* background-color: #19f7003c; */
+    overflow: hidden;
+    display: flex;
+}
+
+.cardsbox_card {
+    justify-content: center;
+    align-items: center;
+    width: 60rem;
+    height: 36rem;
+    /* background-color: #f7f7f7; */
+    margin-right: 20rem;
+    font-family: impact;
+    font-size: 5rem;
+    color: #171717;
+    flex-shrink: 0;
+    display: flex;
+}
+
+
+/* 新版反转卡片的注释 */
+/* 3D翻转卡片样式 */
+.scroll-flip-card {
+    width: 60rem;
+    height: 36rem;
+    perspective: 1200px;
+    margin-right: 20rem;
+    flex-shrink: 0;
+    display: flex;
+}
+
+.scroll-flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+    display: flex;
+}
+
+.scroll-flip-card:hover .scroll-flip-card-inner {
+    transform: rotateY(180deg);
+    display: flex;
+}
+
+.scroll-flip-card-front,
+.scroll-flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+}
+
+/* 卡片正面样式 - 图片+蒙版 */
+.scroll-flip-card-front {
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+    z-index: 1;
+    display: flex;
+}
+
+.scroll-card-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    width: 90%;
+    padding: 3rem;
+    font-size: 1.8rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.scroll-card-content .highlight {
+    color: #0afcff;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(10, 252, 255, 0.5);
+    display: flex;
+}
+
+/* 卡片背面样式 - 时尚简约 */
+.scroll-flip-card-back {
+    transform: rotateY(180deg);
+    background: #0d0221;
+    border: 1px solid rgba(188, 19, 254, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+}
+
+.scroll-back-content {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    padding: 3rem;
+}
+
+.scroll-flip-card-back h3 {
+    font-size: 3rem;
+    color: #0fff50;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(15, 255, 80, 0.3);
+    display: flex;
+}
+
+.scroll-back-text {
+    text-align: center;
+    font-size: 1.8rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+}
